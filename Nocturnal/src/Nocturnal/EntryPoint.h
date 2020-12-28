@@ -5,9 +5,12 @@
 extern Nocturnal::Application* Nocturnal::CreateApplication();
 
 int main(int argc, char** argv) {
-	auto app = Nocturnal::CreateApplication();
-	app->Run();
+	Nocturnal::Log::Init();
+	NOC_CORE_INFO("Core Logging Initialized");
+	NOC_INFO("Client Logging Initialized");
 
+	auto* app = Nocturnal::CreateApplication();
+	app->Run();
 	delete app;
 }
 
