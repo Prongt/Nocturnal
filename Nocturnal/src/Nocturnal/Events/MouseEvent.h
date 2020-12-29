@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Nocturnal {
 
 	class NOCTURNAL_API MouseMovedEvent : public Event

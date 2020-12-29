@@ -1,3 +1,4 @@
+#include "NocturnalPrecompiledHeaders.h"
 #include "Application.h"
 
 #include "Nocturnal/Events/ApplicationEvent.h"

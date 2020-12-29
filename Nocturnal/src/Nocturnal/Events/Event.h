@@ -1,9 +1,7 @@
 #pragma once
+#include "NocturnalPrecompiledHeaders.h"
 #include "Nocturnal/Core.h"
 
-#include <string>
-#include <functional>
-#include <sstream>
 
 namespace Nocturnal
 {

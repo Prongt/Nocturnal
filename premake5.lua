@@ -18,6 +18,9 @@ project "Nocturnal"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("intermediate/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "NocturnalPrecompiledHeaders.h"
+	pchsource "Nocturnal/src/NocturnalPrecompiledHeaders.cpp"
+
     files{
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp"

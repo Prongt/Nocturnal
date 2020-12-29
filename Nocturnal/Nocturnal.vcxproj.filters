@@ -4,6 +4,9 @@
     <Filter Include="Nocturnal">
       <UniqueIdentifier>{1BC573BC-872F-2833-D06D-D9D83C170688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Nocturnal\Events">
+      <UniqueIdentifier>{9F444B3C-8B3D-6A8E-B46F-4F13A0C7499A}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Nocturnal.h" />
@@ -16,13 +19,22 @@
     <ClInclude Include="src\Nocturnal\EntryPoint.h">
       <Filter>Nocturnal</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nocturnal\Events\ApplicationEvent.h">
+      <Filter>Nocturnal\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nocturnal\Events\Event.h">
+      <Filter>Nocturnal\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nocturnal\Events\KeyEvent.h">
+      <Filter>Nocturnal\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nocturnal\Events\MouseEvent.h">
+      <Filter>Nocturnal\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Nocturnal\Log.h">
       <Filter>Nocturnal</Filter>
     </ClInclude>
-    <ClInclude Include="src\Nocturnal\Events\Event.h" />
-    <ClInclude Include="src\Nocturnal\Events\KeyEvent.h" />
-    <ClInclude Include="src\Nocturnal\Events\MouseEvent.h" />
-    <ClInclude Include="src\Nocturnal\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
@@ -31,5 +43,6 @@
     <ClCompile Include="src\Nocturnal\Log.cpp">
       <Filter>Nocturnal</Filter>
     </ClCompile>
+    <ClCompile Include="src\NocturnalPrecompiledHeaders.cpp" />
   </ItemGroup>
 </Project>
