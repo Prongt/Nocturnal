@@ -1,3 +1,6 @@
 [submodule "Nocturnal/vendor/spdlog"]
 	path = Nocturnal/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Nocturnal/vendor/GLFW"]
+	path = Nocturnal/vendor/GLFW
+	url = https://github.com/TheCherno/GLFW

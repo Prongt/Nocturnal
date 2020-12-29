@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Events/Event.h"
+#include "Window.h"
 
 namespace Nocturnal
 {
@@ -11,6 +12,10 @@ namespace Nocturnal
 		Application();
 		virtual ~Application();
 		void Run();
+
+	private:
+		std::unique_ptr<Window> WindowInstance;
+		bool ApplicationIsRunning = true;
 	};
 
 

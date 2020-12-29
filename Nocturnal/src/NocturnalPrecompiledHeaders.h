@@ -10,6 +10,7 @@
 #include <sstream>
 #include <unordered_set>
 #include <unordered_map>
+#include "Nocturnal/Log.h"
 
 #ifdef NOC_PLATFORM_WINDOWS
 	#include <Windows.h>

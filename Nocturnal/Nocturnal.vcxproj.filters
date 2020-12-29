@@ -35,6 +35,8 @@
       <Filter>Nocturnal</Filter>
     </ClInclude>
     <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
+    <ClInclude Include="src\Nocturnal\Window.h" />
+    <ClInclude Include="src\Nocturnal\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
@@ -44,5 +46,6 @@
       <Filter>Nocturnal</Filter>
     </ClCompile>
     <ClCompile Include="src\NocturnalPrecompiledHeaders.cpp" />
+    <ClCompile Include="src\Nocturnal\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>
