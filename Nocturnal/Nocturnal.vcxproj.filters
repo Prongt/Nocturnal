@@ -19,6 +19,10 @@
     <ClInclude Include="src\Nocturnal\Log.h">
       <Filter>Nocturnal</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nocturnal\Events\Event.h" />
+    <ClInclude Include="src\Nocturnal\Events\KeyEvent.h" />
+    <ClInclude Include="src\Nocturnal\Events\MouseEvent.h" />
+    <ClInclude Include="src\Nocturnal\Events\ApplicationEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
