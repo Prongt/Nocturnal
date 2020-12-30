@@ -44,7 +44,8 @@ namespace Nocturnal
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category;}
 
-	class NOCTURNAL_API Event {
+	class NOCTURNAL_API Event
+	{
 		friend class EventDispatcher;
 	public:
 		virtual EventType GetEventType() const = 0;
@@ -64,24 +65,24 @@ namespace Nocturnal
 	class EventDispatcher
 	{
 		template<typename T>
-		using EventFn = std::function<bool>(T&);
+		using EventFunction = std::function<bool(T&)>;
 	public:
-		EventDispatcher(Event& event) : m_Event(event)
-		{
-			
-		}
+		EventDispatcher(Event& event) : EventInstance(event) {}
+		
 		template<typename T>
-		bool Dispatch(EventFn<T> func)
+		bool Dispatch(EventFunction<T> function)
 		{
-			if (m_Event.GetEventType() == T::GetStaticType())
+			if (EventInstance.GetEventType() == T::GetStaticType())
 			{
-				m_Event.EventHasBeenHandled = func(*(T*)&m_Event);
+				EventInstance.EventHasBeenHandled = function(*static_cast<T*>(&EventInstance));
 				return true;
 			}
+
+			return false;
 		}
 
 	private:
-		Event& m_Event;
+		Event& EventInstance;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& event)

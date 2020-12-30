@@ -13,6 +13,9 @@ namespace Nocturnal {
 		MouseMovedEvent(float x, float y)
 			: m_MouseX(x), m_MouseY(y) {}
 
+		MouseMovedEvent(double x, double y)
+			: m_MouseX(static_cast<float>(x)), m_MouseY(static_cast<float>(y)) {}
+
 		inline float GetX() const { return m_MouseX; }
 		inline float GetY() const { return m_MouseY; }
 
@@ -33,6 +36,9 @@ namespace Nocturnal {
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {}
+
+		MouseScrolledEvent(double xOffset, double yOffset)
+			: m_XOffset(static_cast<float>(xOffset)), m_YOffset(static_cast<float>(yOffset)) {}
 
 		inline float GetXOffset() const { return m_XOffset; }
 		inline float GetYOffset() const { return m_YOffset; }

@@ -17,7 +17,7 @@ namespace Nocturnal
 		inline unsigned int GetWidth() const override { return WindowInstanceData.Width; }
 		inline unsigned int GetHeight() const override { return WindowInstanceData.Height; }
 
-		inline void SetEventCallback(const EventCallbackFn& callback) override { WindowInstanceData.EventCallback = callback; }
+		inline void SetEventCallback(const EventCallbackFunction& callback) override { WindowInstanceData.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
 		bool IsVSyncEnabled() const override;
 
@@ -33,7 +33,7 @@ namespace Nocturnal
 			unsigned int Width;
 			unsigned int Height;
 			bool VSyncIsEnabled;
-			EventCallbackFn EventCallback;
+			EventCallbackFunction EventCallback;
 		};
 
 		WindowData WindowInstanceData;
