@@ -7,6 +7,12 @@
     <Filter Include="Nocturnal\Events">
       <UniqueIdentifier>{9F444B3C-8B3D-6A8E-B46F-4F13A0C7499A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Nocturnal.h" />
@@ -31,21 +37,39 @@
     <ClInclude Include="src\Nocturnal\Events\MouseEvent.h">
       <Filter>Nocturnal\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nocturnal\Layer.h">
+      <Filter>Nocturnal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nocturnal\LayerStack.h">
+      <Filter>Nocturnal</Filter>
+    </ClInclude>
     <ClInclude Include="src\Nocturnal\Log.h">
       <Filter>Nocturnal</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nocturnal\Window.h">
+      <Filter>Nocturnal</Filter>
+    </ClInclude>
     <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
-    <ClInclude Include="src\Nocturnal\Window.h" />
-    <ClInclude Include="src\Nocturnal\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
+      <Filter>Nocturnal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nocturnal\Layer.cpp">
+      <Filter>Nocturnal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nocturnal\LayerStack.cpp">
       <Filter>Nocturnal</Filter>
     </ClCompile>
     <ClCompile Include="src\Nocturnal\Log.cpp">
       <Filter>Nocturnal</Filter>
     </ClCompile>
     <ClCompile Include="src\NocturnalPrecompiledHeaders.cpp" />
-    <ClCompile Include="src\Nocturnal\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -46,7 +46,6 @@ namespace Nocturnal
 
 	class NOCTURNAL_API Event
 	{
-		friend class EventDispatcher;
 	public:
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
@@ -57,8 +56,6 @@ namespace Nocturnal
 		{
 			return GetCategoryFlags() & category;
 		}
-
-	protected:
 		bool EventHasBeenHandled = false;
 	};
 

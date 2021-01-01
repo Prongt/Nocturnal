@@ -19,12 +19,28 @@ namespace Nocturnal
 	{
 	}
 
+	void Application::PushLayer(Layer* layer)
+	{
+		LayerStack.PushLayer(layer);
+	}
+
+
+	void Application::PushOverlay(Layer* overlay)
+	{
+		LayerStack.PushOverlay(overlay);
+	}
+
+
 	void Application::Run()
 	{
 		while (ApplicationIsRunning)
 		{
 			glClearColor(0, 1, 0, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			for (Layer* layer : LayerStack)
+				layer->OnUpdate();
+			
 			WindowInstance->OnUpdate();
 		}
 	}
@@ -34,7 +50,14 @@ namespace Nocturnal
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(OnWindowClose));
 
-		NOC_CORE_TRACE("{0}", event);
+		for (auto layerIterator = LayerStack.end(); layerIterator != LayerStack.begin();)
+		{
+			(*--layerIterator)->OnEvent(event);
+			if (event.EventHasBeenHandled){}
+				break;
+		}
+
+		//NOC_CORE_TRACE("{0}", event);
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& event)

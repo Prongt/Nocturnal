@@ -84,6 +84,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -108,7 +109,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -134,7 +136,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -157,18 +160,22 @@
     <ClInclude Include="src\Nocturnal\Events\Event.h" />
     <ClInclude Include="src\Nocturnal\Events\KeyEvent.h" />
     <ClInclude Include="src\Nocturnal\Events\MouseEvent.h" />
+    <ClInclude Include="src\Nocturnal\Layer.h" />
+    <ClInclude Include="src\Nocturnal\LayerStack.h" />
     <ClInclude Include="src\Nocturnal\Log.h" />
-    <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
-    <ClInclude Include="src\Nocturnal\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Nocturnal\Window.h" />
+    <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp" />
+    <ClCompile Include="src\Nocturnal\Layer.cpp" />
+    <ClCompile Include="src\Nocturnal\LayerStack.cpp" />
     <ClCompile Include="src\Nocturnal\Log.cpp" />
     <ClCompile Include="src\NocturnalPrecompiledHeaders.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Nocturnal\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

@@ -58,14 +58,17 @@ project "Nocturnal"
 
     filter "configurations:Debug"
 		defines "NOC_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "NOC_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "NOC_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 
@@ -107,12 +110,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "NOC_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "NOC_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "NOC_DIST"
+		buildoptions "/MD"
 		optimize "On" 
