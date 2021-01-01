@@ -20,6 +20,9 @@ namespace Nocturnal
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
+		inline static Application& Get() { return *ApplicationInstance; }
+		inline Window& GetWindow() { return *WindowInstance; }
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& event);
 		
@@ -27,6 +30,9 @@ namespace Nocturnal
 		bool ApplicationIsRunning = true;
 
 		LayerStack LayerStack;
+
+	private:
+		static Application* ApplicationInstance;
 	};
 
 

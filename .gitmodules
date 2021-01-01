@@ -4,3 +4,6 @@
 [submodule "Nocturnal/vendor/GLFW"]
 	path = Nocturnal/vendor/GLFW
 	url = https://github.com/TheCherno/GLFW
+[submodule "Nocturnal/vendor/imgui"]
+	path = Nocturnal/vendor/imgui
+	url = https://github.com/TheCherno/imgui

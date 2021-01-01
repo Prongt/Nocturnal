@@ -6,7 +6,7 @@ class Sandbox : public Nocturnal::Application
 public:
 	Sandbox()
 	{
-		
+		PushOverlay(new Nocturnal::ImGuiLayer());
 	}
 	
 	~Sandbox()

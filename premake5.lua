@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Nocturnal/vendor/GLFW/include"
 IncludeDir["GLAD"] = "Nocturnal/vendor/GLAD/include"
+IncludeDir["imgui"] = "Nocturnal/vendor/imgui"
 include "Nocturnal/vendor/GLFW"
 include "Nocturnal/vendor/GLAD"
+include "Nocturnal/vendor/imgui"
 
     
 project "Nocturnal"
@@ -36,14 +38,15 @@ project "Nocturnal"
     includedirs{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.GLAD}"
+		"%{IncludeDir.GLAD}",
+		"%{IncludeDir.imgui}"
 	}
 	
 	links{
 		"GLFW",
 		"GLAD",
+		"imgui",
 		"opengl32.lib"
 	}
 
