@@ -5,6 +5,8 @@
 #include "Nocturnal/Events/MouseEvent.h"
 #include "Nocturnal/Events/KeyEvent.h"
 
+#include <glad/glad.h>
+
 namespace Nocturnal
 {
 	static bool GlfwHasInitialized = false;
@@ -49,6 +51,10 @@ namespace Nocturnal
 			static_cast<int>(WindowInstanceData.Height), 
 			WindowInstanceData.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(WindowInstance);
+
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		NOC_CORE_ASSERT(status, "Failed to initialize GLAD");
+		
 		glfwSetWindowUserPointer(WindowInstance, &WindowInstanceData);
 		SetVSync(true);
 

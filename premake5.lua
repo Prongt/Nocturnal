@@ -12,7 +12,9 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Nocturnal/vendor/GLFW/include"
+IncludeDir["GLAD"] = "Nocturnal/vendor/GLAD/include"
 include "Nocturnal/vendor/GLFW"
+include "Nocturnal/vendor/GLAD"
 
     
 project "Nocturnal"
@@ -35,11 +37,13 @@ project "Nocturnal"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLAD}"
 	}
 	
 	links{
 		"GLFW",
+		"GLAD",
 		"opengl32.lib"
 	}
 
@@ -50,7 +54,8 @@ project "Nocturnal"
 
         defines{
             "NOC_PLATFORM_WINDOWS",
-            "NOC_BUILD_DLL"
+            "NOC_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
         }
     postbuildcommands{
         ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")

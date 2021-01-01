@@ -4,6 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
+
 namespace Nocturnal
 {
 	class WindowsWindow : public Window
