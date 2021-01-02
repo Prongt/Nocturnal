@@ -81,31 +81,61 @@ namespace Nocturnal
 	void ImGuiLayer::OnEvent(Event& event)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		const auto* keyPressedEvent = dynamic_cast<KeyPressedEvent*>(&event);
 
-		if (keyPressedEvent != nullptr)
-		{
-			io.KeysDown[keyPressedEvent->GetKeyCode()] = true;
-			NOC_CORE_TRACE("Key {0} was pressed", keyPressedEvent->GetKeyCode());
-			
-		}
-
+		const auto* keyPressed = dynamic_cast<KeyPressedEvent*>(&event);
 		const auto* keyRelease = dynamic_cast<KeyReleasedEvent*>(&event);
+		const auto* mouseMove = dynamic_cast<MouseMovedEvent*>(&event);
+		const auto* mouseDown = dynamic_cast<MouseButtonPressedEvent*>(&event);
+		const auto* mouseUp = dynamic_cast<MouseButtonReleasedEvent*>(&event);
+		const auto* mouseScroll = dynamic_cast<MouseScrolledEvent*>(&event);
+
+
+		if (keyPressed != nullptr)
+		{
+			io.KeysDown[keyPressed->GetKeyCode()] = true;
+			NOC_CORE_TRACE("Key {0} was pressed", keyPressed->GetKeyCode());
+		}
 
 		if (keyRelease != nullptr)
 		{
 			io.KeysDown[keyRelease->GetKeyCode()] = false;
 		}
+		
+		if (mouseMove != nullptr)
+		{
+			io.MousePos = ImVec2(mouseMove->GetX(), mouseMove->GetY());
+		}
 
-		//if (action == GLFW_PRESS)
-		//	io.KeysDown[key] = true;
-		//if (action == GLFW_RELEASE)
-		//	io.KeysDown[key] = false;
+		if (mouseDown != nullptr)
+		{
+			io.MouseReleased[mouseDown->GetMouseButton()] = false;
+			io.MouseDown[mouseDown->GetMouseButton()] = true;
+		}
+
+		if (mouseUp != nullptr)
+		{
+			io.MouseReleased[mouseUp->GetMouseButton()] = true;
+			io.MouseDown[mouseUp->GetMouseButton()] = false;
+		}
+
+		if (mouseScroll != nullptr)
+		{
+			io.MouseWheelH += mouseScroll->GetXOffset();
+			io.MouseWheel += mouseScroll->GetYOffset();
+		}
+
+		keyPressed = nullptr;
+		keyRelease		= nullptr;
+		mouseMove		= nullptr;
+		mouseDown		= nullptr;
+		mouseUp			= nullptr;
+		mouseScroll		= nullptr;
+
 
 		//// Modifiers are not reliable across systems
-		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+		//io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+		//io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+		//io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
 		
 	}
 }
