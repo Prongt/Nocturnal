@@ -7,7 +7,11 @@
 
 namespace Nocturnal
 {
-	class NOCTURNAL_API LayerStack {
+	class NOCTURNAL_API LayerStack
+	{
+	private:
+		std::vector<Layer*> Layers;
+		std::vector<Layer*>::iterator LayerInsert;
 	public:
 		LayerStack();
 		~LayerStack();
@@ -19,9 +23,5 @@ namespace Nocturnal
 
 		std::vector<Layer*>::iterator begin() {return Layers.begin(); }
 		std::vector<Layer*>::iterator end() {return Layers.end(); }
-
-	private:
-		std::vector<Layer*> Layers;
-		std::vector<Layer*>::iterator LayerInsert;
 	};
 }

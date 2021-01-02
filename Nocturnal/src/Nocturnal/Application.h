@@ -11,6 +11,15 @@ namespace Nocturnal
 {
 	class NOCTURNAL_API Application
 	{
+	private:
+		bool ApplicationIsRunning = true;
+		LayerStack LayerStack;
+		std::unique_ptr<Window> WindowInstance;
+
+		static Application* ApplicationInstance;
+		
+		bool OnWindowClose(WindowCloseEvent& event);
+
 	public:
 		Application();
 		virtual ~Application();
@@ -20,19 +29,8 @@ namespace Nocturnal
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
-		inline static Application& Get() { return *ApplicationInstance; }
-		inline Window& GetWindow() { return *WindowInstance; }
-
-	private:
-		bool OnWindowClose(WindowCloseEvent& event);
-		
-		std::unique_ptr<Window> WindowInstance;
-		bool ApplicationIsRunning = true;
-
-		LayerStack LayerStack;
-
-	private:
-		static Application* ApplicationInstance;
+		static Application& Get() { return *ApplicationInstance; }
+		Window& GetWindow() const { return *WindowInstance; }
 	};
 
 

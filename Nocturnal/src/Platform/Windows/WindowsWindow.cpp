@@ -167,11 +167,4 @@ namespace Nocturnal
 	{
 		return WindowInstanceData.VSyncIsEnabled;
 	}
-
-
-
-
-
-
-
 }

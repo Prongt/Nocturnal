@@ -8,15 +8,14 @@ namespace Nocturnal
 {
 	class NOCTURNAL_API Log
 	{
-	public:
-		static void Init();
-
-		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return CoreLogger; }
-		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return ClientLogger; }
-
 	private:
 		static std::shared_ptr<spdlog::logger> CoreLogger;
 		static std::shared_ptr<spdlog::logger> ClientLogger;
+	public:
+		static void Init();
+
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return CoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return ClientLogger; }
 	};
 }
 

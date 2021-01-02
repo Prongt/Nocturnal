@@ -13,8 +13,8 @@ namespace Nocturnal
 		unsigned int Width;
 		unsigned int Height;
 
-		WindowProps(const std::string& title = "Nocturnal Engine", unsigned int width = 1280,
-			unsigned int height = 720) : Title(title), Width(width), Height(height)
+		WindowProps(const std::string& title = "Nocturnal Engine", const unsigned int width = 1280,
+		            const unsigned int height = 720) : Title(title), Width(width), Height(height)
 		{
 		}
 	};

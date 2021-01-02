@@ -47,22 +47,26 @@ namespace Nocturnal
 	class NOCTURNAL_API Event
 	{
 	public:
+		bool EventHasBeenHandled = false;
+
+		bool IsInCategory(const EventCategory category) const
+		{
+			return GetCategoryFlags() & category;
+		}
+
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual int GetCategoryFlags() const = 0;
 		virtual std::string ToString() const { return GetName(); }
-
-		inline bool IsInCategory(EventCategory category)
-		{
-			return GetCategoryFlags() & category;
-		}
-		bool EventHasBeenHandled = false;
 	};
 
 	class EventDispatcher
 	{
 		template<typename T>
 		using EventFunction = std::function<bool(T&)>;
+	
+	private:
+		Event& EventInstance;
 	public:
 		EventDispatcher(Event& event) : EventInstance(event) {}
 		
@@ -77,9 +81,6 @@ namespace Nocturnal
 
 			return false;
 		}
-
-	private:
-		Event& EventInstance;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& event)

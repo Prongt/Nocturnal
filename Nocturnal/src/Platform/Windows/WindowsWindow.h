@@ -9,24 +9,10 @@ namespace Nocturnal
 {
 	class WindowsWindow : public Window
 	{
-	public:
-		WindowsWindow(const WindowProps& props);
-		virtual ~WindowsWindow();
-
-		void OnUpdate() override;
-
-		inline unsigned int GetWidth() const override { return WindowInstanceData.Width; }
-		inline unsigned int GetHeight() const override { return WindowInstanceData.Height; }
-
-		inline void SetEventCallback(const EventCallbackFunction& callback) override { WindowInstanceData.EventCallback = callback; }
-		void SetVSync(bool enabled) override;
-		bool IsVSyncEnabled() const override;
-
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 
-	private :
 		GLFWwindow* WindowInstance;
 		struct WindowData
 		{
@@ -38,5 +24,17 @@ namespace Nocturnal
 		};
 
 		WindowData WindowInstanceData;
+	public:
+		WindowsWindow(const WindowProps& props);
+		virtual ~WindowsWindow();
+
+		void OnUpdate() override;
+
+		unsigned int GetWidth() const override { return WindowInstanceData.Width; }
+		unsigned int GetHeight() const override { return WindowInstanceData.Height; }
+
+		void SetEventCallback(const EventCallbackFunction& callback) override { WindowInstanceData.EventCallback = callback; }
+		void SetVSync(bool enabled) override;
+		bool IsVSyncEnabled() const override;
 	};
 }

@@ -7,22 +7,22 @@ namespace Nocturnal {
 	class NOCTURNAL_API MouseMovedEvent : public Event
 	{
 	private:
-		float m_MouseX, m_MouseY;
+		float MouseX, MouseY;
 		
 	public:
-		MouseMovedEvent(float x, float y)
-			: m_MouseX(x), m_MouseY(y) {}
+		MouseMovedEvent(const float mouseX, const float mouseY)
+			: MouseX(mouseX), MouseY(mouseY) {}
 
-		MouseMovedEvent(double x, double y)
-			: m_MouseX(static_cast<float>(x)), m_MouseY(static_cast<float>(y)) {}
+		MouseMovedEvent(const double mouseX, const double mouseY)
+			: MouseX(static_cast<float>(mouseX)), MouseY(static_cast<float>(mouseY)) {}
 
-		inline float GetX() const { return m_MouseX; }
-		inline float GetY() const { return m_MouseY; }
+		float GetX() const { return MouseX; }
+		float GetY() const { return MouseY; }
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
+			ss << "MouseMovedEvent: X:" << MouseX << ", Y:" << MouseY;
 			return ss.str();
 		}
 
@@ -33,52 +33,52 @@ namespace Nocturnal {
 
 	class NOCTURNAL_API MouseScrolledEvent : public Event
 	{
+	private:
+		float XOffset, YOffset;
 	public:
-		MouseScrolledEvent(float xOffset, float yOffset)
-			: m_XOffset(xOffset), m_YOffset(yOffset) {}
+		MouseScrolledEvent(const float xOffset, const float yOffset)
+			: XOffset(xOffset), YOffset(yOffset) {}
 
-		MouseScrolledEvent(double xOffset, double yOffset)
-			: m_XOffset(static_cast<float>(xOffset)), m_YOffset(static_cast<float>(yOffset)) {}
+		MouseScrolledEvent(const double xOffset, const double yOffset)
+			: XOffset(static_cast<float>(xOffset)), YOffset(static_cast<float>(yOffset)) {}
 
-		inline float GetXOffset() const { return m_XOffset; }
-		inline float GetYOffset() const { return m_YOffset; }
+		float GetXOffset() const { return XOffset; }
+		float GetYOffset() const { return YOffset; }
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
+			ss << "MouseScrolledEvent: X:" << GetXOffset() << ", Y:" << GetYOffset();
 			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(MouseScrolled)
 			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
-	private:
-		float m_XOffset, m_YOffset;
 	};
 
 	class NOCTURNAL_API MouseButtonEvent : public Event
 	{
+	protected:
+		MouseButtonEvent(const int button)
+			: Button(button) {}
+
+		int Button;
 	public:
-		inline int GetMouseButton() const { return m_Button; }
+		int GetMouseButton() const { return Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
-	protected:
-		MouseButtonEvent(int button)
-			: m_Button(button) {}
-
-		int m_Button;
 	};
 
 	class NOCTURNAL_API MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(int button)
+		MouseButtonPressedEvent(const int button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseButtonPressedEvent: " << m_Button;
+			ss << "MouseButtonPressedEvent: " << Button;
 			return ss.str();
 		}
 
@@ -88,13 +88,13 @@ namespace Nocturnal {
 	class NOCTURNAL_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(int button)
+		MouseButtonReleasedEvent(const int button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseButtonReleasedEvent: " << m_Button;
+			ss << "MouseButtonReleasedEvent: " << Button;
 			return ss.str();
 		}
 

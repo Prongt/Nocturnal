@@ -3,6 +3,8 @@
 
 #include "GLFW/glfw3.h"
 #include "Nocturnal/Application.h"
+#include "Nocturnal/Events/KeyEvent.h"
+#include "Nocturnal/Events/MouseEvent.h"
 #include "Platform/OpenGL/ImGuiOpenGLRenderer.h"
 
 namespace Nocturnal
@@ -50,7 +52,6 @@ namespace Nocturnal
 		imGuiIo.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
 
 		ImGui_ImplOpenGL3_Init();
-		
 	}
 	
 	void ImGuiLayer::OnDetach()
@@ -63,9 +64,9 @@ namespace Nocturnal
 		Application& app = Application::Get();
 		imGuiIo.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
 
-		float time = (float)glfwGetTime();
-		imGuiIo.DeltaTime = deltaTime > 0.0f ? (time - deltaTime) : (1.0f / 60.0f);
-		deltaTime = time;
+		const float time = (float)glfwGetTime();
+		imGuiIo.DeltaTime = DeltaTime > 0.0f ? (time - DeltaTime) : (1.0f / 60.0f);
+		DeltaTime = time;
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
@@ -79,5 +80,32 @@ namespace Nocturnal
 
 	void ImGuiLayer::OnEvent(Event& event)
 	{
+		ImGuiIO& io = ImGui::GetIO();
+		const auto* keyPressedEvent = dynamic_cast<KeyPressedEvent*>(&event);
+
+		if (keyPressedEvent != nullptr)
+		{
+			io.KeysDown[keyPressedEvent->GetKeyCode()] = true;
+			NOC_CORE_TRACE("Key {0} was pressed", keyPressedEvent->GetKeyCode());
+			
+		}
+
+		const auto* keyRelease = dynamic_cast<KeyReleasedEvent*>(&event);
+
+		if (keyRelease != nullptr)
+		{
+			io.KeysDown[keyRelease->GetKeyCode()] = false;
+		}
+
+		//if (action == GLFW_PRESS)
+		//	io.KeysDown[key] = true;
+		//if (action == GLFW_RELEASE)
+		//	io.KeysDown[key] = false;
+
+		//// Modifiers are not reliable across systems
+		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+		
 	}
 }

@@ -6,6 +6,8 @@ namespace Nocturnal
 {
 	class NOCTURNAL_API ImGuiLayer : public Layer
 	{
+	private:
+		float DeltaTime = 0;
 	public:
 		ImGuiLayer();
 		~ImGuiLayer();
@@ -14,8 +16,5 @@ namespace Nocturnal
 		void OnDetach() override;
 		void OnUpdate() override;
 		void OnEvent(Event& event) override;
-
-	private:
-		float deltaTime = 0;
 	};
 }

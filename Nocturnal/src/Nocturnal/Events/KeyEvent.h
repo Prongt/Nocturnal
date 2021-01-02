@@ -8,35 +8,35 @@ namespace Nocturnal {
 	{
 
 	protected:
-		KeyEvent(int keycode)
-			: m_KeyCode(keycode) {}
+		KeyEvent(const int keycode)
+			: KeyCode(keycode) {}
 
-		int m_KeyCode;
+		int KeyCode;
 	public:
-		inline int GetKeyCode() const { return m_KeyCode; }
+		int GetKeyCode() const { return KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
-	
 	};
 
 	class NOCTURNAL_API KeyPressedEvent : public KeyEvent
 	{
+	private:
+		int RepeatCount;
+		
 	public:
-		KeyPressedEvent(int keycode, int repeatCount)
-			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
+		KeyPressedEvent(const int keycode, const int repeatCount)
+			: KeyEvent(keycode), RepeatCount(repeatCount) {}
 
-		inline int GetRepeatCount() const { return m_RepeatCount; }
+		int GetRepeatCount() const { return RepeatCount; }
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
+			ss << "KeyPressedEvent: " << KeyCode << " (" << RepeatCount << " repeats)";
 			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(KeyPressed)
-	private:
-		int m_RepeatCount;
 	};
 
 	class NOCTURNAL_API KeyReleasedEvent : public KeyEvent
@@ -48,7 +48,7 @@ namespace Nocturnal {
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyReleasedEvent: " << m_KeyCode;
+			ss << "KeyReleasedEvent: " << KeyCode;
 			return ss.str();
 		}
 

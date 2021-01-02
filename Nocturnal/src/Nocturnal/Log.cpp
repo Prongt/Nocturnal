@@ -10,6 +10,7 @@ namespace Nocturnal
 	void Log::Init()
 	{
 		spdlog::set_pattern("%^[%T] %n: %v%$");
+		
 		CoreLogger = spdlog::stdout_color_mt("NOCTURNAL");
 		CoreLogger->set_level(spdlog::level::trace);
 

@@ -3,8 +3,6 @@
 
 namespace Nocturnal
 {
-
-
 	Layer::Layer(const std::string& name)
 		: LayerName(name)
 	{
