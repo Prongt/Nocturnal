@@ -1,11 +1,10 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "ImGuiLayer.h"
-
-#include "GLFW/glfw3.h"
-#include "Nocturnal/Application.h"
-#include "Nocturnal/Events/KeyEvent.h"
-#include "Nocturnal/Events/MouseEvent.h"
 #include "Platform/OpenGL/ImGuiOpenGLRenderer.h"
+
+//TODO Remove headers 
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 namespace Nocturnal
 {
@@ -80,62 +79,101 @@ namespace Nocturnal
 
 	void ImGuiLayer::OnEvent(Event& event)
 	{
+		EventDispatcher dispatcher (event);
+		dispatcher.Dispatch<KeyDownEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnKeyDownEvent));
+		dispatcher.Dispatch<KeyUpEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnKeyUpEvent));
+		dispatcher.Dispatch<KeyTypedEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnKeyTypedEvent));
+		dispatcher.Dispatch<MouseButtonDownEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnMouseDownEvent));
+		dispatcher.Dispatch<MouseButtonUpEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnMouseUpEvent));
+		dispatcher.Dispatch<MouseScrolledEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnMouseScrollEvent));
+		dispatcher.Dispatch<MouseMovedEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnMouseMovedEvent));
+		dispatcher.Dispatch<WindowResizeEvent>(NOC_BIND_EVENT_FUNCTION(ImGuiLayer::OnWindowResizeEvent));
+		
+		
+		//// Modifiers are not reliable across systems
+		
+		
+	}
+
+	bool ImGuiLayer::OnKeyDownEvent(KeyDownEvent& event)
+	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		const auto* keyPressed = dynamic_cast<KeyPressedEvent*>(&event);
-		const auto* keyRelease = dynamic_cast<KeyReleasedEvent*>(&event);
-		const auto* mouseMove = dynamic_cast<MouseMovedEvent*>(&event);
-		const auto* mouseDown = dynamic_cast<MouseButtonPressedEvent*>(&event);
-		const auto* mouseUp = dynamic_cast<MouseButtonReleasedEvent*>(&event);
-		const auto* mouseScroll = dynamic_cast<MouseScrolledEvent*>(&event);
+		io.KeysDown[event.GetKeyCode()] = true;
+		NOC_CORE_TRACE("Key {0} was pressed", event.GetKeyCode());
 
+		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
 
-		if (keyPressed != nullptr)
-		{
-			io.KeysDown[keyPressed->GetKeyCode()] = true;
-			NOC_CORE_TRACE("Key {0} was pressed", keyPressed->GetKeyCode());
-		}
+		return false;
+	}
 
-		if (keyRelease != nullptr)
-		{
-			io.KeysDown[keyRelease->GetKeyCode()] = false;
-		}
+	bool ImGuiLayer::OnKeyUpEvent(KeyUpEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.KeysDown[event.GetKeyCode()] = false;
+
+		return false;
+	}
+
+	bool ImGuiLayer::OnKeyTypedEvent(KeyTypedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		const int keycode = event.GetKeyCode();
+
+		if (keycode > 0 && keycode < 0x10000)
+			io.AddInputCharacter(static_cast<unsigned short>(keycode));
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseMovedEvent(MouseMovedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		io.MousePos = ImVec2(event.GetX(), event.GetY());
+
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseDownEvent(MouseButtonDownEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		io.MouseReleased[event.GetMouseButton()] = false;
+		io.MouseDown[event.GetMouseButton()] = true;
+
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseUpEvent(MouseButtonUpEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		io.MouseReleased[event.GetMouseButton()] = true;
+		io.MouseDown[event.GetMouseButton()] = false;
+
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseScrollEvent(MouseScrolledEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
 		
-		if (mouseMove != nullptr)
-		{
-			io.MousePos = ImVec2(mouseMove->GetX(), mouseMove->GetY());
-		}
+		io.MouseWheelH += event.GetXOffset();
+		io.MouseWheel += event.GetYOffset();
 
-		if (mouseDown != nullptr)
-		{
-			io.MouseReleased[mouseDown->GetMouseButton()] = false;
-			io.MouseDown[mouseDown->GetMouseButton()] = true;
-		}
+		return false;
+	}
 
-		if (mouseUp != nullptr)
-		{
-			io.MouseReleased[mouseUp->GetMouseButton()] = true;
-			io.MouseDown[mouseUp->GetMouseButton()] = false;
-		}
-
-		if (mouseScroll != nullptr)
-		{
-			io.MouseWheelH += mouseScroll->GetXOffset();
-			io.MouseWheel += mouseScroll->GetYOffset();
-		}
-
-		keyPressed = nullptr;
-		keyRelease		= nullptr;
-		mouseMove		= nullptr;
-		mouseDown		= nullptr;
-		mouseUp			= nullptr;
-		mouseScroll		= nullptr;
-
-
-		//// Modifiers are not reliable across systems
-		//io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-		//io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-		//io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+	bool ImGuiLayer::OnWindowResizeEvent(WindowResizeEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.DisplaySize = ImVec2(event.GetWidth(), event.GetHeight());
+		io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
+		glViewport(0, 0, event.GetWidth(), event.GetHeight());
 		
+		return false;
 	}
 }

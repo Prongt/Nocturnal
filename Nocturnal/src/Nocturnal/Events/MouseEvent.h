@@ -69,36 +69,36 @@ namespace Nocturnal {
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	};
 
-	class NOCTURNAL_API MouseButtonPressedEvent : public MouseButtonEvent
+	class NOCTURNAL_API MouseButtonDownEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(const int button)
+		MouseButtonDownEvent(const int button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseButtonPressedEvent: " << Button;
+			ss << "MouseButtonDownEvent: " << Button;
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MouseButtonPressed)
+		EVENT_CLASS_TYPE(MouseButtonDown)
 	};
 
-	class NOCTURNAL_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class NOCTURNAL_API MouseButtonUpEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(const int button)
+		MouseButtonUpEvent(const int button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseButtonReleasedEvent: " << Button;
+			ss << "MouseButtonUpEvent: " << Button;
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MouseButtonReleased)
+		EVENT_CLASS_TYPE(MouseButtonUp)
 	};
 
 }

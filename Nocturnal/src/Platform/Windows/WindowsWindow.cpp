@@ -85,23 +85,30 @@ namespace Nocturnal
 			{
 			case GLFW_PRESS:
 				{
-					KeyPressedEvent event(key, 0);
+					KeyDownEvent event(key, 0);
 					data.EventCallback(event);
 					break;
 				}
 			case GLFW_REPEAT:
 				{
-					KeyPressedEvent event(key, 1);
+					KeyDownEvent event(key, 1);
 					data.EventCallback(event);
 					break;
 				}
 			case GLFW_RELEASE:
 				{
-					KeyReleasedEvent event(key);
+					KeyUpEvent event(key);
 					data.EventCallback(event);
 					break;
 				}
 			}
+		});
+
+		glfwSetCharCallback(WindowInstance, [](GLFWwindow* window, unsigned int keycode)
+		{
+			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+			KeyTypedEvent event(keycode);
+			data.EventCallback(event);
 		});
 
 		glfwSetMouseButtonCallback(WindowInstance, [](GLFWwindow* window, int button, int action, int mods)
@@ -112,13 +119,13 @@ namespace Nocturnal
 			{
 			case GLFW_PRESS:
 			{
-				MouseButtonPressedEvent event(button);
+				MouseButtonDownEvent event(button);
 				data.EventCallback(event);
 				break;
 			}
 			case GLFW_RELEASE:
 			{
-				MouseButtonReleasedEvent event(button);
+				MouseButtonUpEvent event(button);
 				data.EventCallback(event);
 				break;
 			}

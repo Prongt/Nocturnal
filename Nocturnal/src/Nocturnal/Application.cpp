@@ -7,8 +7,6 @@
 namespace Nocturnal
 {
 
-#define BIND_EVENT_FUNCTION(x) std::bind(&Application::x, this, std::placeholders::_1)
-
 	Application* Application::ApplicationInstance = nullptr;
 	
 	Application::Application()
@@ -16,7 +14,7 @@ namespace Nocturnal
 		NOC_CORE_ASSERT(!ApplicationInstance, "Application instance already exists");
 		ApplicationInstance = this;
 		WindowInstance = std::unique_ptr<Window>(Window::Create());
-		WindowInstance->SetEventCallback(BIND_EVENT_FUNCTION(OnWindowEvent));
+		WindowInstance->SetEventCallback(NOC_BIND_EVENT_FUNCTION(Application::OnWindowEvent));
 	}
 
 	Application::~Application()
@@ -54,7 +52,7 @@ namespace Nocturnal
 	void Application::OnWindowEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(NOC_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
 		//Goes through the layer stack and sends events
 		for (auto layerIterator = LayerStack.end(); layerIterator != LayerStack.begin();)

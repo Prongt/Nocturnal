@@ -20,10 +20,11 @@ namespace Nocturnal
 		AppTick,
 		AppUpdate,
 		AppRender,
-		KeyPressed,
-		KeyReleased,
-		MouseButtonPressed,
-		MouseButtonReleased,
+		KeyDown,
+		KeyUp,
+		KeyTyped,
+		MouseButtonDown,
+		MouseButtonUp,
 		MouseMoved,
 		MouseScrolled
 	};
