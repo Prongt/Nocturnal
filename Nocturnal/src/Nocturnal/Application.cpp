@@ -1,6 +1,6 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "Application.h"
-
+#include "Input.h"
 #include "Nocturnal/Log.h"
 #include "glad/glad.h"
 
@@ -44,7 +44,15 @@ namespace Nocturnal
 
 			for (Layer* layer : LayerStack)
 				layer->OnUpdate();
-			
+
+			if (Input::IsKeyDown(KeyCode::A))
+			{
+				NOC_CORE_TRACE("Hello!");
+			}
+			if (Input::IsKeyDown(KeyCode::Escape))
+			{
+				NOC_CORE_TRACE("Dont Go!");
+			}
 			WindowInstance->OnUpdate();
 		}
 	}

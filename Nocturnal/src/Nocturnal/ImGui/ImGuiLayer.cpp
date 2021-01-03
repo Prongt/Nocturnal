@@ -27,28 +27,28 @@ namespace Nocturnal
 		imGuiIo.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 
 		//Default ImGui Keycodes 
-		imGuiIo.KeyMap[ImGuiKey_Tab] = GLFW_KEY_TAB;
-		imGuiIo.KeyMap[ImGuiKey_LeftArrow] = GLFW_KEY_LEFT;
-		imGuiIo.KeyMap[ImGuiKey_RightArrow] = GLFW_KEY_RIGHT;
-		imGuiIo.KeyMap[ImGuiKey_UpArrow] = GLFW_KEY_UP;
-		imGuiIo.KeyMap[ImGuiKey_DownArrow] = GLFW_KEY_DOWN;
-		imGuiIo.KeyMap[ImGuiKey_PageUp] = GLFW_KEY_PAGE_UP;
-		imGuiIo.KeyMap[ImGuiKey_PageDown] = GLFW_KEY_PAGE_DOWN;
-		imGuiIo.KeyMap[ImGuiKey_Home] = GLFW_KEY_HOME;
-		imGuiIo.KeyMap[ImGuiKey_End] = GLFW_KEY_END;
-		imGuiIo.KeyMap[ImGuiKey_Insert] = GLFW_KEY_INSERT;
-		imGuiIo.KeyMap[ImGuiKey_Delete] = GLFW_KEY_DELETE;
-		imGuiIo.KeyMap[ImGuiKey_Backspace] = GLFW_KEY_BACKSPACE;
-		imGuiIo.KeyMap[ImGuiKey_Space] = GLFW_KEY_SPACE;
-		imGuiIo.KeyMap[ImGuiKey_Enter] = GLFW_KEY_ENTER;
-		imGuiIo.KeyMap[ImGuiKey_Escape] = GLFW_KEY_ESCAPE;
-		imGuiIo.KeyMap[ImGuiKey_KeyPadEnter] = GLFW_KEY_KP_ENTER;
-		imGuiIo.KeyMap[ImGuiKey_A] = GLFW_KEY_A;
-		imGuiIo.KeyMap[ImGuiKey_C] = GLFW_KEY_C;
-		imGuiIo.KeyMap[ImGuiKey_V] = GLFW_KEY_V;
-		imGuiIo.KeyMap[ImGuiKey_X] = GLFW_KEY_X;
-		imGuiIo.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
-		imGuiIo.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
+		imGuiIo.KeyMap[ImGuiKey_Tab] =			(int)KeyCode::Tab;
+		imGuiIo.KeyMap[ImGuiKey_LeftArrow] =	(int)KeyCode::LeftArrow;
+		imGuiIo.KeyMap[ImGuiKey_RightArrow] =	(int)KeyCode::RightArrow;
+		imGuiIo.KeyMap[ImGuiKey_UpArrow] =		(int)KeyCode::UpArrow;
+		imGuiIo.KeyMap[ImGuiKey_DownArrow] =	(int)KeyCode::DownArrow;
+		imGuiIo.KeyMap[ImGuiKey_PageUp] =		(int)KeyCode::PageUp;
+		imGuiIo.KeyMap[ImGuiKey_PageDown] =		(int)KeyCode::PageDown;
+		imGuiIo.KeyMap[ImGuiKey_Home] =			(int)KeyCode::Home;
+		imGuiIo.KeyMap[ImGuiKey_End] =			(int)KeyCode::End;
+		imGuiIo.KeyMap[ImGuiKey_Insert] =		(int)KeyCode::Insert;
+		imGuiIo.KeyMap[ImGuiKey_Delete] =		(int)KeyCode::DeleteKey;
+		imGuiIo.KeyMap[ImGuiKey_Backspace] =	(int)KeyCode::Backspace;
+		imGuiIo.KeyMap[ImGuiKey_Space] =		(int)KeyCode::Space;
+		imGuiIo.KeyMap[ImGuiKey_Enter] =		(int)KeyCode::Enter;
+		imGuiIo.KeyMap[ImGuiKey_Escape] =		(int)KeyCode::Escape;
+		imGuiIo.KeyMap[ImGuiKey_KeyPadEnter] =	(int)KeyCode::NumPadEnter;
+		imGuiIo.KeyMap[ImGuiKey_A] =			(int)KeyCode::A;
+		imGuiIo.KeyMap[ImGuiKey_C] =			(int)KeyCode::C;
+		imGuiIo.KeyMap[ImGuiKey_V] =			(int)KeyCode::V;
+		imGuiIo.KeyMap[ImGuiKey_X] =			(int)KeyCode::X;
+		imGuiIo.KeyMap[ImGuiKey_Y] =			(int)KeyCode::Y;
+		imGuiIo.KeyMap[ImGuiKey_Z] =			(int)KeyCode::Z;
 
 		ImGui_ImplOpenGL3_Init();
 	}
@@ -98,14 +98,12 @@ namespace Nocturnal
 	bool ImGuiLayer::OnKeyDownEvent(KeyDownEvent& event)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-
 		io.KeysDown[event.GetKeyCode()] = true;
-		NOC_CORE_TRACE("Key {0} was pressed", event.GetKeyCode());
 
-		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
-		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+		io.KeyCtrl = io.KeysDown[(int)KeyCode::LeftControl] || io.KeysDown[(int)KeyCode::RightControl];
+		io.KeyShift = io.KeysDown[(int)KeyCode::LeftShift] || io.KeysDown[(int)KeyCode::RightShift];
+		io.KeyAlt = io.KeysDown[(int)KeyCode::LeftAlt] || io.KeysDown[(int)KeyCode::RightAlt];
+		io.KeySuper = io.KeysDown[(int)KeyCode::LeftWindows] || io.KeysDown[(int)KeyCode::RightWindows];
 
 		return false;
 	}

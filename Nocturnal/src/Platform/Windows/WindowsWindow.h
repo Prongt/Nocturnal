@@ -36,5 +36,7 @@ namespace Nocturnal
 		void SetEventCallback(const EventCallbackFunction& callback) override { WindowInstanceData.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
 		bool IsVSyncEnabled() const override;
+
+		virtual void* GetNativeWindow() const { return  WindowInstance; }
 	};
 }

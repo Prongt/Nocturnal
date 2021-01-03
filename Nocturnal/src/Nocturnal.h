@@ -4,6 +4,8 @@
 #include "Nocturnal/Log.h"
 #include "Nocturnal/Layer.h"
 #include "Nocturnal/ImGui/ImGuiLayer.h"
+#include "Nocturnal/Input.h"
+#include "Nocturnal/InputCodes.h"
 
 
 #include "Nocturnal/EntryPoint.h"

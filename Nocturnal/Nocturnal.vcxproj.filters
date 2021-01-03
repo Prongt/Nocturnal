@@ -7,8 +7,14 @@
     <Filter Include="Nocturnal\Events">
       <UniqueIdentifier>{9F444B3C-8B3D-6A8E-B46F-4F13A0C7499A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Nocturnal\ImGui">
+      <UniqueIdentifier>{8562E028-F1ED-4DED-FAFE-D0E16609AAED}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
@@ -37,6 +43,15 @@
     <ClInclude Include="src\Nocturnal\Events\MouseEvent.h">
       <Filter>Nocturnal\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Nocturnal\ImGui\ImGuiLayer.h">
+      <Filter>Nocturnal\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nocturnal\Input.h">
+      <Filter>Nocturnal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nocturnal\InputCodes.h">
+      <Filter>Nocturnal</Filter>
+    </ClInclude>
     <ClInclude Include="src\Nocturnal\Layer.h">
       <Filter>Nocturnal</Filter>
     </ClInclude>
@@ -50,15 +65,22 @@
       <Filter>Nocturnal</Filter>
     </ClInclude>
     <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\Nocturnal\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
       <Filter>Nocturnal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Nocturnal\ImGui\ImGuiLayer.cpp">
+      <Filter>Nocturnal\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Nocturnal\Layer.cpp">
       <Filter>Nocturnal</Filter>
@@ -70,10 +92,14 @@
       <Filter>Nocturnal</Filter>
     </ClCompile>
     <ClCompile Include="src\NocturnalPrecompiledHeaders.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Nocturnal\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
   </ItemGroup>
 </Project>

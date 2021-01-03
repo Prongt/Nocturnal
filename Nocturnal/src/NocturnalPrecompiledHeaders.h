@@ -11,6 +11,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include "Nocturnal/Log.h"
+#include "Nocturnal/InputCodes.h"
 
 #ifdef NOC_PLATFORM_WINDOWS
 	#include <Windows.h>
