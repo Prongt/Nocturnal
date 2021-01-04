@@ -1,6 +1,6 @@
 workspace "Nocturnal"
     architecture "x64"
-
+	startproject "Sandbox"
     configurations
 	{
 		"Debug",
@@ -14,9 +14,14 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Nocturnal/vendor/GLFW/include"
 IncludeDir["GLAD"] = "Nocturnal/vendor/GLAD/include"
 IncludeDir["imgui"] = "Nocturnal/vendor/imgui"
-include "Nocturnal/vendor/GLFW"
-include "Nocturnal/vendor/GLAD"
-include "Nocturnal/vendor/imgui"
+IncludeDir["glm"] = "Nocturnal/vendor/glm"
+
+group "Dependencies"
+	include "Nocturnal/vendor/GLFW"
+	include "Nocturnal/vendor/GLAD"
+	include "Nocturnal/vendor/imgui"
+group ""
+
 
     
 project "Nocturnal"
@@ -32,7 +37,9 @@ project "Nocturnal"
 
     files{
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
     }
 
     includedirs{
@@ -40,7 +47,8 @@ project "Nocturnal"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.glm}"
 	}
 	
 	links{
@@ -61,7 +69,7 @@ project "Nocturnal"
 			"GLFW_INCLUDE_NONE"
         }
     postbuildcommands{
-        ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+        ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
     }
 
     filter "configurations:Debug"
@@ -98,7 +106,8 @@ project "Sandbox"
 	includedirs
 	{
 		"Nocturnal/vendor/spdlog/include",
-		"Nocturnal/src"
+		"Nocturnal/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links

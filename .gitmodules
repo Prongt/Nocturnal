@@ -7,3 +7,6 @@
 [submodule "Nocturnal/vendor/imgui"]
 	path = Nocturnal/vendor/imgui
 	url = https://github.com/TheCherno/imgui
+[submodule "Nocturnal/vendor/glm"]
+	path = Nocturnal/vendor/glm
+	url = https://github.com/g-truc/glm
