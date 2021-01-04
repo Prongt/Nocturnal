@@ -2,26 +2,32 @@
 
 #include "Core.h"
 #include "Layer.h"
-#include "LayerStack.h"
-#include "Events/Event.h"
+#include "Nocturnal/LayerStack.h"
+#include "Nocturnal/Events/Event.h"
 #include "Window.h"
-#include "Events/ApplicationEvent.h"
+#include "Nocturnal/Events/ApplicationEvent.h"
 
 namespace Nocturnal
 {
+	class ImGuiLayer;
+
 	class NOCTURNAL_API Application
 	{
 	private:
+		
 		bool ApplicationIsRunning = true;
 		LayerStack LayerStack;
 		std::unique_ptr<Window> WindowInstance;
-
+		//std::unique_ptr<ImGuiLayer> ImGuiLayerInstance;
+		ImGuiLayer* ImGuiLayerInstance;
 		static Application* ApplicationInstance;
 		
 		bool OnWindowClose(WindowCloseEvent& event);
 
 	public:
+		
 		Application();
+		
 		virtual ~Application();
 		void Run();
 
@@ -31,6 +37,9 @@ namespace Nocturnal
 
 		static Application& Get() { return *ApplicationInstance; }
 		Window& GetWindow() const { return *WindowInstance; }
+
+	private:
+		
 	};
 
 

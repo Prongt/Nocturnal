@@ -5,7 +5,6 @@ namespace Nocturnal
 {
 	LayerStack::LayerStack()
 	{
-		LayerInsert = Layers.begin();
 	}
 
 	LayerStack::~LayerStack()
@@ -19,7 +18,8 @@ namespace Nocturnal
 	 */
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		LayerInsert = Layers.emplace(LayerInsert, layer);
+		Layers.emplace(Layers.begin()+ LayerInsertIndex, layer);
+		LayerInsertIndex++;
 	}
 
 	/**
@@ -36,7 +36,7 @@ namespace Nocturnal
 		if (layerToRemove != Layers.end())
 		{
 			Layers.erase(layerToRemove);
-			--LayerInsert;
+			LayerInsertIndex--;
 		}
 	}
 

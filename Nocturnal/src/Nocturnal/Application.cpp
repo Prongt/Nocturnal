@@ -3,11 +3,12 @@
 #include "Input.h"
 #include "Nocturnal/Log.h"
 #include "glad/glad.h"
+#include "ImGui/ImGuiLayer.h"
 
 namespace Nocturnal
 {
 
-	Application* Application::ApplicationInstance = nullptr;
+	
 	
 	Application::Application()
 	{
@@ -15,7 +16,11 @@ namespace Nocturnal
 		ApplicationInstance = this;
 		WindowInstance = std::unique_ptr<Window>(Window::Create());
 		WindowInstance->SetEventCallback(NOC_BIND_EVENT_FUNCTION(Application::OnWindowEvent));
+
+		ImGuiLayerInstance = new ImGuiLayer();
+		PushOverlay(ImGuiLayerInstance);
 	}
+	Application* Application::ApplicationInstance = nullptr;
 
 	Application::~Application()
 	{
@@ -44,6 +49,13 @@ namespace Nocturnal
 
 			for (Layer* layer : LayerStack)
 				layer->OnUpdate();
+
+			ImGuiLayerInstance->Begin();
+
+			for (Layer* layer : LayerStack)
+				layer->OnImGuiRender();
+			
+			ImGuiLayerInstance->End();
 
 			if (Input::IsKeyDown(KeyCode::A))
 			{
