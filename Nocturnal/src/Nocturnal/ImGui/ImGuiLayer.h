@@ -1,6 +1,7 @@
 #pragma once
 #include "Nocturnal/Layer.h"
 #include "Nocturnal/Application.h"
+#include "Nocturnal/Events/KeyEvent.h"
 
 
 namespace Nocturnal
@@ -16,6 +17,7 @@ namespace Nocturnal
 		void OnAttach() override;
 		void OnDetach() override;
 		void OnImGuiRender() override;
+		void OnEvent(Event& event) override;
 
 		void Begin();
 		void End();

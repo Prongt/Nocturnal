@@ -27,6 +27,8 @@ namespace Nocturnal
 #define NOC_CORE_ERROR(...) ::Nocturnal::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define NOC_CORE_FATAL(...) ::Nocturnal::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
+#define NOC_LOG_NOT_IMPLEMENTED() NOC_CORE_ERROR("{0} has not been implemented yet!", __func__)
+
 
 //Client Logging Macros
 #define NOC_INFO(...)  ::Nocturnal::Log::GetClientLogger()->info(__VA_ARGS__)

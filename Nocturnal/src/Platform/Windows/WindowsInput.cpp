@@ -16,6 +16,7 @@ namespace Nocturnal
 	{
 		const auto keyState = glfwGetKey(GetGLFWWindow(), keycode);
 		return keyState == GLFW_PRESS || keyState == GLFW_REPEAT;
+		//return keyState == GLFW_REPEAT;
 	}
 
 	bool WindowsInput::IsMouseDownImplementation(const int button)

@@ -85,19 +85,19 @@ namespace Nocturnal
 			{
 			case GLFW_PRESS:
 				{
-					KeyDownEvent event(key, 0);
+					KeyPressedEvent event(key);
 					data.EventCallback(event);
 					break;
 				}
 			case GLFW_REPEAT:
 				{
-					KeyDownEvent event(key, 1);
+					KeyHeldEvent event(key, 1);
 					data.EventCallback(event);
 					break;
 				}
 			case GLFW_RELEASE:
 				{
-					KeyUpEvent event(key);
+					KeyReleasedEvent event(key);
 					data.EventCallback(event);
 					break;
 				}
@@ -107,7 +107,7 @@ namespace Nocturnal
 		glfwSetCharCallback(WindowInstance, [](GLFWwindow* window, unsigned int keycode)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-			KeyTypedEvent event(keycode);
+			KeyTypedEvent event(static_cast<int>(keycode));
 			data.EventCallback(event);
 		});
 

@@ -20,11 +20,12 @@ namespace Nocturnal
 		AppTick,
 		AppUpdate,
 		AppRender,
-		KeyDown,
-		KeyUp,
+		KeyPressed,
+		KeyHeld,
+		KeyReleased,
 		KeyTyped,
-		MouseButtonDown,
-		MouseButtonUp,
+		MouseButtonPressed,
+		MouseButtonReleased,
 		MouseMoved,
 		MouseScrolled
 	};
@@ -50,7 +51,7 @@ namespace Nocturnal
 	public:
 		bool EventHasBeenHandled = false;
 
-		bool IsInCategory(const EventCategory category) const
+		inline bool IsInCategory(const EventCategory category) const
 		{
 			return GetCategoryFlags() & category;
 		}

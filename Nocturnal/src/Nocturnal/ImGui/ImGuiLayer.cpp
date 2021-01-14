@@ -6,6 +6,8 @@
 //TODO Remove headers 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "Nocturnal/Input.h"
+#include "Nocturnal/Events/KeyEvent.h"
 
 namespace Nocturnal
 {
@@ -64,6 +66,10 @@ namespace Nocturnal
 		ImGui::ShowDemoWindow(&showImGui);
 	}
 
+	void ImGuiLayer::OnEvent(Event& event)
+	{
+	}
+
 	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
@@ -75,7 +81,7 @@ namespace Nocturnal
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
-		io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
+		io.DisplaySize = ImVec2(static_cast<float>(app.GetWindow().GetWidth()), static_cast<float>(app.GetWindow().GetHeight()));
 
 		// Rendering
 		ImGui::Render();

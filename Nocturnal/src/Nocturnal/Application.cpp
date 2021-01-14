@@ -1,6 +1,7 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "Application.h"
 #include "Input.h"
+#include "Events/KeyEvent.h"
 #include "Nocturnal/Log.h"
 #include "glad/glad.h"
 #include "ImGui/ImGuiLayer.h"
@@ -56,15 +57,6 @@ namespace Nocturnal
 				layer->OnImGuiRender();
 			
 			ImGuiLayerInstance->End();
-
-			if (Input::IsKeyDown(KeyCode::A))
-			{
-				NOC_CORE_TRACE("Hello!");
-			}
-			if (Input::IsKeyDown(KeyCode::Escape))
-			{
-				NOC_CORE_TRACE("Dont Go!");
-			}
 			WindowInstance->OnUpdate();
 		}
 	}
@@ -74,6 +66,8 @@ namespace Nocturnal
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(NOC_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
+		//Input::SetEvent(&event);
+		
 		//Goes through the layer stack and sends events
 		for (auto layerIterator = LayerStack.end(); layerIterator != LayerStack.begin();)
 		{

@@ -82,7 +82,7 @@ namespace Nocturnal {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MouseButtonDown)
+		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
 	class NOCTURNAL_API MouseButtonUpEvent : public MouseButtonEvent
@@ -98,7 +98,7 @@ namespace Nocturnal {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MouseButtonUp)
+		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
 
 }

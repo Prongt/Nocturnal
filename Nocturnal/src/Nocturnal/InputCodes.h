@@ -128,7 +128,7 @@ namespace Nocturnal
 	};
 
 	//glfw Mouse codes
-	enum class MouseCodes
+	enum class MouseCode
 	{
 		Mouse1 = 0,
 		Mouse2 = 1,
