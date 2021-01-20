@@ -26,9 +26,13 @@ group ""
     
 project "Nocturnal"
     location "Nocturnal"
-    kind "SharedLib"
-    language "C++"
-	staticruntime "off"
+	kind "StaticLib"
+	
+	language "C++"
+	cppdialect "C++17"
+
+	staticruntime "on"
+	
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("intermediate/" .. outputdir .. "/%{prj.name}")
@@ -41,7 +45,10 @@ project "Nocturnal"
         "%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
-    }
+	}
+	defines{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
 
     includedirs{
 		"%{prj.name}/src",
@@ -60,7 +67,6 @@ project "Nocturnal"
 	}
 
     filter "system:windows"
-        cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
 
@@ -69,9 +75,6 @@ project "Nocturnal"
             "NOC_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
         }
-    postbuildcommands{
-        ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-    }
 
     filter "configurations:Debug"
 		defines "NOC_DEBUG"
@@ -93,8 +96,11 @@ project "Nocturnal"
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
+	
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++17"
+
+	staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("intermediate/" .. outputdir .. "/%{prj.name}")
@@ -119,8 +125,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "off"
 		systemversion "latest"
 
 		defines

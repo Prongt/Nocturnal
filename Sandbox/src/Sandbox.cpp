@@ -1,5 +1,7 @@
 #include <Nocturnal.h>
 
+
+#include "imgui/imgui.h"
 #include "Nocturnal/Events/KeyEvent.h"
 
 class ExampleLayer : public Nocturnal::Layer
@@ -17,7 +19,7 @@ public:
 			NOC_WARN("B key was pressed");
 		}
 		
-		if (Nocturnal::Input::IsKeyReleased(Nocturnal::KeyCode::Space))
+		if (Nocturnal::Input::IsKeyUp(Nocturnal::KeyCode::Space))
 		{
 			NOC_WARN("Space Released");
 		}
@@ -38,6 +40,13 @@ public:
 	{
 		Nocturnal::EventDispatcher eventDispatcher(event);
 		eventDispatcher.Dispatch<Nocturnal::KeyPressedEvent>(NOC_BIND_EVENT_FUNCTION(ExampleLayer::OnKeyPressed));
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Bla");
+		ImGui::End();
 	}
 };
 

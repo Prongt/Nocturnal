@@ -24,9 +24,9 @@ namespace Nocturnal
 		 */
 		static bool IsKeyDown(const KeyCode keycode) { return Instance->IsKeyDownImplementation(static_cast<int>(keycode)); }
 		/**
-		 * \return returns true if key was released this frame
+		 * \return returns true if key is not pressed or held
 		 */
-		static bool IsKeyReleased(const KeyCode keycode) { return !Instance->IsKeyDownImplementation(static_cast<int>(keycode));}
+		static bool IsKeyUp(const KeyCode keycode) { return !Instance->IsKeyDownImplementation(static_cast<int>(keycode));}
 
 		static bool IsMouseDown(const MouseCode mouseCode) { return Instance->IsMouseDownImplementation(static_cast<int>(mouseCode)); }
 		static bool IsMouseDown(const int mouseCode) { return Instance->IsMouseDownImplementation(mouseCode); }
