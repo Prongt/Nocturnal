@@ -30,14 +30,12 @@ namespace Nocturnal
 	void Application::PushLayer(Layer* layer)
 	{
 		LayerStack.PushLayer(layer);
-		layer->OnAttach();
 	}
 
 
 	void Application::PushOverlay(Layer* overlay)
 	{
 		LayerStack.PushOverlay(overlay);
-		overlay->OnAttach();
 	}
 
 

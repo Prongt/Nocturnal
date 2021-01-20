@@ -20,6 +20,7 @@ namespace Nocturnal
 	{
 		Layers.emplace(Layers.begin()+ LayerInsertIndex, layer);
 		LayerInsertIndex++;
+		layer->OnAttach();
 	}
 
 	/**
@@ -28,6 +29,7 @@ namespace Nocturnal
 	void LayerStack::PushOverlay(Layer* overlay)
 	{
 		Layers.emplace_back(overlay);
+		overlay->OnAttach();
 	}
 
 	void LayerStack::PopLayer(Layer* layer)
@@ -37,6 +39,7 @@ namespace Nocturnal
 		{
 			Layers.erase(layerToRemove);
 			LayerInsertIndex--;
+			layer->OnDetach();
 		}
 	}
 
@@ -46,6 +49,7 @@ namespace Nocturnal
 		if (layerToRemove != Layers.end())
 		{
 			Layers.erase(layerToRemove);
+			overlay->OnDetach();
 		}
 	}
 
