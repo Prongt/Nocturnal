@@ -5,7 +5,7 @@
 #include "Nocturnal/Events/MouseEvent.h"
 #include "Nocturnal/Events/KeyEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Nocturnal
 {
@@ -37,6 +37,8 @@ namespace Nocturnal
 		WindowInstanceData.Width = props.Width;
 		WindowInstanceData.Height = props.Height;
 
+		
+
 		NOC_CORE_TRACE("Creating Window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!GlfwHasInitialized)
@@ -50,10 +52,12 @@ namespace Nocturnal
 		WindowInstance = glfwCreateWindow(static_cast<int>(WindowInstanceData.Width), 
 			static_cast<int>(WindowInstanceData.Height), 
 			WindowInstanceData.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(WindowInstance);
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		NOC_CORE_ASSERT(status, "Failed to initialize GLAD");
+		RenderingContextInstance = new OpenGLContext(WindowInstance);
+		
+		RenderingContextInstance->Init();
+		
+		
 		
 		glfwSetWindowUserPointer(WindowInstance, &WindowInstanceData);
 		SetVSync(true);
@@ -157,10 +161,10 @@ namespace Nocturnal
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(WindowInstance);
+		RenderingContextInstance->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool enabled)
+	void WindowsWindow::SetVSync(const bool enabled)
 	{
 		if (enabled)
 			glfwSwapInterval(1);

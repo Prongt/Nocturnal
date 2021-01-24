@@ -3,6 +3,7 @@
 #include "Nocturnal/Window.h"
 
 #include <GLFW/glfw3.h>
+#include "Nocturnal/Renderer/RendererContext.h"
 
 
 namespace Nocturnal
@@ -24,6 +25,7 @@ namespace Nocturnal
 		};
 
 		WindowData WindowInstanceData;
+		RendererContext* RenderingContextInstance;
 	public:
 		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
