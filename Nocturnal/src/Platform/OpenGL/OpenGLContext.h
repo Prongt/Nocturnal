@@ -11,8 +11,8 @@ namespace Nocturnal
 	private:
 		GLFWwindow* WindowHandle;
 
-		unsigned int VertexArrayObjectID;
-		const std::string vertexShaderSource = R"(#version 330 core
+		unsigned int VertexArrayObjectId;
+		const std::string VertexShaderSource = R"(#version 330 core
 			layout (location = 0) in vec3 aPos;
 			out vec3 v_position;
 			void main()
@@ -22,7 +22,7 @@ namespace Nocturnal
 			}
 			)";
 
-		const std::string fragmentShaderSource = R"(#version 330 core
+		const std::string FragmentShaderSource = R"(#version 330 core
 			out vec4 FragColor;
 
 			in vec3 v_position;

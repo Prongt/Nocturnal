@@ -2,7 +2,6 @@
 
 #include "Nocturnal/Core.h"
 #include "Layer.h"
-
 #include <vector>
 
 namespace Nocturnal

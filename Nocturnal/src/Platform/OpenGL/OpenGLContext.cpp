@@ -9,13 +9,13 @@ namespace Nocturnal
 	OpenGLContext::OpenGLContext(struct  GLFWwindow* window)
 		:WindowHandle(window)
 	{
-		VertexArrayObjectID = 0;
+		VertexArrayObjectId = 0;
 	}
 
 	void OpenGLContext::Init()
 	{
 		glfwMakeContextCurrent(WindowHandle);
-		const int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		const int status = gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
 		NOC_CORE_ASSERT(status, "Failed to initialize GLAD");
 
 		
@@ -27,22 +27,22 @@ namespace Nocturnal
 			0.0f,  0.5f, 0.0f
 		};
 
-		glGenVertexArrays(1, &VertexArrayObjectID);
-		glBindVertexArray(VertexArrayObjectID);
+		glGenVertexArrays(1, &VertexArrayObjectId);
+		glBindVertexArray(VertexArrayObjectId);
 
 		//Creating buffer and Generating id for the vertex buffer
-		unsigned int VertexBufferID;
-		glGenBuffers(1, &VertexBufferID);
+		unsigned int vertexBufferId;
+		glGenBuffers(1, &vertexBufferId);
 
 		//Binding the vertex buffer to type GL_ARRAY_BUFFER
-		glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
 
 		//Allocates memory on the gpu and sends the vertex data
 		//GL_STATIC_DRAW -> the data is set only once and used many times
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 		
-		Shader = std::make_unique<OpenGLShader>(vertexShaderSource, fragmentShaderSource);
+		Shader = std::make_unique<OpenGLShader>(VertexShaderSource, FragmentShaderSource);
 		
 
 		//first index is 0
@@ -57,7 +57,7 @@ namespace Nocturnal
 	void OpenGLContext::SwapBuffers()
 	{
 		Shader->Bind();
-		glBindVertexArray(VertexArrayObjectID);
+		glBindVertexArray(VertexArrayObjectId);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		
 		glfwSwapBuffers(WindowHandle);

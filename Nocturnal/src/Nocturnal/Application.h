@@ -14,11 +14,9 @@ namespace Nocturnal
 	class NOCTURNAL_API Application
 	{
 	private:
-		
 		bool ApplicationIsRunning = true;
 		LayerStack LayerStack;
 		std::unique_ptr<Window> WindowInstance;
-		//std::unique_ptr<ImGuiLayer> ImGuiLayerInstance;
 		ImGuiLayer* ImGuiLayerInstance;
 		static Application* ApplicationInstance;
 		
@@ -37,9 +35,6 @@ namespace Nocturnal
 
 		static Application& Get() { return *ApplicationInstance; }
 		Window& GetWindow() const { return *WindowInstance; }
-
-	private:
-		
 	};
 
 

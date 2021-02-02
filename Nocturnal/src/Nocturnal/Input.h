@@ -1,7 +1,6 @@
 #pragma once
 #include "Core.h"
 #include "InputCodes.h"
-#include "Events/KeyEvent.h"
 
 namespace Nocturnal
 {
@@ -9,8 +8,6 @@ namespace Nocturnal
 	{
 	private:
 		static Input* Instance;
-
-
 
 	protected:
 		virtual bool IsKeyDownImplementation(const int keycode) = 0;

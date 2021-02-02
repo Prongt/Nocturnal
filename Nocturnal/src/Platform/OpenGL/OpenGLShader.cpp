@@ -11,7 +11,7 @@ namespace Nocturnal
 		// Send the vertex shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
 		const GLchar* vertexSource = static_cast<const GLchar*>(vertexShaderSrc.c_str());
-		glShaderSource(vertexShaderId, 1, &vertexSource, 0);
+		glShaderSource(vertexShaderId, 1, &vertexSource, nullptr);
 
 		glCompileShader(vertexShaderId);
 
@@ -38,7 +38,7 @@ namespace Nocturnal
 		// Send the fragment shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
 		vertexSource = static_cast<const GLchar*>(fragmentShaderSrc.c_str());
-		glShaderSource(fragmentShaderId, 1, &vertexSource, 0);
+		glShaderSource(fragmentShaderId, 1, &vertexSource, nullptr);
 
 		glCompileShader(fragmentShaderId);
 
