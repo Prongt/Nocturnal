@@ -1,5 +1,6 @@
 #pragma once
 #include "Nocturnal/Renderer/RendererContext.h"
+#include "OpenGLShader.h"
 
 struct GLFWwindow;
 
@@ -10,21 +11,29 @@ namespace Nocturnal
 	private:
 		GLFWwindow* WindowHandle;
 
-		unsigned int ShaderProgramID;
 		unsigned int VertexArrayObjectID;
-		const char* vertexShaderSource = "#version 330 core\n"
-			"layout (location = 0) in vec3 aPos;\n"
-			"void main()\n"
-			"{\n"
-			"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-			"}\0";
+		const std::string vertexShaderSource = R"(#version 330 core
+			layout (location = 0) in vec3 aPos;
+			out vec3 v_position;
+			void main()
+			{
+				v_position = aPos;
+				gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+			}
+			)";
 
-		const char* fragmentShaderSource = "#version 330 core\n"
-			"out vec4 FragColor;\n"
-			"void main()\n"
-			"{\n"
-			"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-			"}\0";
+		const std::string fragmentShaderSource = R"(#version 330 core
+			out vec4 FragColor;
+
+			in vec3 v_position;
+			void main()
+			{
+			   FragColor = vec4(v_position * 0.5 + 0.5, 1.0f);
+			}
+			)";
+			
+
+		std::unique_ptr<OpenGLShader> Shader;
 			
 	public:
 		OpenGLContext(GLFWwindow* window);
