@@ -1338,6 +1338,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Nocturnal\Renderer\RendererContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Nocturnal\Renderer\VertexBuffer.h" />
+    <ClInclude Include="src\Nocturnal\Renderer\IndexBuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
@@ -1369,5 +1372,7 @@
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\Nocturnal\Renderer\VertexBuffer.cpp" />
+    <ClCompile Include="src\Nocturnal\Renderer\IndexBuffer.cpp" />
   </ItemGroup>
 </Project>
