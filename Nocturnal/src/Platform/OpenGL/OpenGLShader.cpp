@@ -60,27 +60,27 @@ namespace Nocturnal
 			return;
 		}
 
-		ShaderId = glCreateProgram();
+		_shaderId = glCreateProgram();
 
 		// Attach our shaders to our program
-		glAttachShader(ShaderId, vertexShaderId);
-		glAttachShader(ShaderId, fragmentShaderId);
+		glAttachShader(_shaderId, vertexShaderId);
+		glAttachShader(_shaderId, fragmentShaderId);
 
-		glLinkProgram(ShaderId);
+		glLinkProgram(_shaderId);
 
 		// Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint programLinkStatus = 0;
-		glGetProgramiv(ShaderId, GL_LINK_STATUS, static_cast<int*>(&programLinkStatus));
+		glGetProgramiv(_shaderId, GL_LINK_STATUS, static_cast<int*>(&programLinkStatus));
 		if (programLinkStatus == GL_FALSE)
 		{
 			GLint maxLength = 0;
-			glGetProgramiv(ShaderId, GL_INFO_LOG_LENGTH, &maxLength);
+			glGetProgramiv(_shaderId, GL_INFO_LOG_LENGTH, &maxLength);
 
 			// The maxLength includes the NULL character
 			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(ShaderId, maxLength, &maxLength, &infoLog[0]);
+			glGetProgramInfoLog(_shaderId, maxLength, &maxLength, &infoLog[0]);
 
-			glDeleteProgram(ShaderId);
+			glDeleteProgram(_shaderId);
 			
 			glDeleteShader(vertexShaderId);
 			glDeleteShader(fragmentShaderId);
@@ -91,18 +91,18 @@ namespace Nocturnal
 		}
 
 		// Always detach shaders after a successful link.
-		glDetachShader(ShaderId, vertexShaderId);
-		glDetachShader(ShaderId, fragmentShaderId);
+		glDetachShader(_shaderId, vertexShaderId);
+		glDetachShader(_shaderId, fragmentShaderId);
 	}
 
 	OpenGLShader::~OpenGLShader()
 	{
-		glDeleteProgram(ShaderId);
+		glDeleteProgram(_shaderId);
 	}
 
 	void OpenGLShader::Bind() const
 	{
-		glUseProgram(ShaderId);
+		glUseProgram(_shaderId);
 	}
 
 	void OpenGLShader::UnBind() const

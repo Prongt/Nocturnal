@@ -5,7 +5,7 @@ namespace Nocturnal
 	class OpenGLShader
 	{
 	private:
-		unsigned int ShaderId;
+		unsigned int _shaderId;
 	
 	public:
 		OpenGLShader(const std::string& vertexShaderSrc, const std::string& fragmentShaderSrc);
