@@ -10,7 +10,7 @@ namespace Nocturnal
 		glCreateBuffers(1, &rendererID);
 
 		glBindBuffer(GL_ARRAY_BUFFER, rendererID);
-		
+
 		//Allocates memory on the gpu and sends the vertex data
 		//GL_STATIC_DRAW -> the data is set only once and used many times
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);

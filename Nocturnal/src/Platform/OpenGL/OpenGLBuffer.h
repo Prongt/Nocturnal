@@ -7,11 +7,16 @@ namespace Nocturnal
 	{
 	private:
 		uint32_t rendererID;
+		BufferLayout bufferLayout;
 	public:
 		OpenGLVertexBuffer(float* vertices, uint32_t size);
 		virtual ~OpenGLVertexBuffer();
 		void Bind() const override;
 		void UnBind() const override;
+
+		void SetLayout(const BufferLayout& layout) override { bufferLayout = layout; }
+		const BufferLayout& GetLayout() const override { return bufferLayout; }
+		
 	};
 
 	class OpenGLIndexBuffer : public IndexBuffer
@@ -23,9 +28,9 @@ namespace Nocturnal
 		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
 		virtual ~OpenGLIndexBuffer();
 
-		virtual void Bind() const;
-		virtual void UnBind() const;
-		virtual uint32_t GetCount() const { return indicesCount; }
+		void Bind() const override;
+		void UnBind() const override;
+		uint32_t GetCount() const override { return indicesCount; }
 		
 	};
 }
