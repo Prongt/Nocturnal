@@ -7,9 +7,9 @@ namespace Nocturnal
 {
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 	{
-		glCreateBuffers(1, &rendererID);
+		glCreateBuffers(1, &_RendererId);
 
-		glBindBuffer(GL_ARRAY_BUFFER, rendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, _RendererId);
 
 		//Allocates memory on the gpu and sends the vertex data
 		//GL_STATIC_DRAW -> the data is set only once and used many times
@@ -18,12 +18,12 @@ namespace Nocturnal
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		glDeleteBuffers(1, &rendererID);
+		glDeleteBuffers(1, &_RendererId);
 	}
 
 	void OpenGLVertexBuffer::Bind() const
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, rendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, _RendererId);
 	}
 
 	void OpenGLVertexBuffer::UnBind() const
@@ -36,11 +36,11 @@ namespace Nocturnal
 	
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
-		: indicesCount(count)
+		: _IndicesCount(count)
 	{
-		glCreateBuffers(1, &rendererID);
+		glCreateBuffers(1, &_RendererId);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _RendererId);
 
 		//Allocates memory on the gpu and sends the vertex data
 		//GL_STATIC_DRAW -> the data is set only once and used many times
@@ -49,12 +49,12 @@ namespace Nocturnal
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
-		glDeleteBuffers(1, &rendererID);
+		glDeleteBuffers(1, &_RendererId);
 	}
 
 	void OpenGLIndexBuffer::Bind() const
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _RendererId);
 	}
 
 	void OpenGLIndexBuffer::UnBind() const

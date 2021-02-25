@@ -155,13 +155,16 @@
     <ClInclude Include="src\Nocturnal\LayerStack.h" />
     <ClInclude Include="src\Nocturnal\Log.h" />
     <ClInclude Include="src\Nocturnal\Renderer\Buffer.h" />
+    <ClInclude Include="src\Nocturnal\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Nocturnal\Renderer\Renderer.h" />
+    <ClInclude Include="src\Nocturnal\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Nocturnal\Renderer\RendererContext.h" />
     <ClInclude Include="src\Nocturnal\Renderer\VertexArray.h" />
     <ClInclude Include="src\Nocturnal\Window.h" />
     <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -591,10 +594,13 @@
     <ClCompile Include="src\NocturnalPrecompiledHeaders.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Nocturnal\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Nocturnal\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />

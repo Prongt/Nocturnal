@@ -20,6 +20,6 @@ namespace Nocturnal
 
 
 		const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers() const override { return _vertexBuffers; }
-		const std::shared_ptr<IndexBuffer>& GetIndexBuffers() const override { return _indexBuffer; }
+		const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override { return _indexBuffer; }
 	};
 }

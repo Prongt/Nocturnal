@@ -71,40 +71,40 @@ namespace Nocturnal
 	class BufferLayout
 	{
 	private:
-		std::vector<BufferElement> bufferElements;
-		uint32_t stride = 0;
+		std::vector<BufferElement> _BufferElements;
+		uint32_t _Stride = 0;
 		void CalculateOffsetsAndStride()
 		{
 			uint32_t offset = 0;
-			stride = 0;
-			for (auto& element : bufferElements)
+			_Stride = 0;
+			for (auto& element : _BufferElements)
 			{
 				element.Offset = offset;
 				offset += element.Size;
-				stride += element.Size;
+				_Stride += element.Size;
 			}
 		}
 	public:
 		BufferLayout() = default;
 		BufferLayout(const std::initializer_list<BufferElement>& elements)
-			:	bufferElements(elements)
+			:	_BufferElements(elements)
 		{
 			CalculateOffsetsAndStride();
 		}
 
-		const std::vector<BufferElement>& GetElements() const { return bufferElements; }
-		uint32_t GetStride() const { return stride; }
+		const std::vector<BufferElement>& GetElements() const { return _BufferElements; }
+		uint32_t GetStride() const { return _Stride; }
 
-		std::vector<BufferElement>::iterator begin() { return bufferElements.begin(); }
-		std::vector<BufferElement>::iterator end() { return bufferElements.end(); }
-		std::vector<BufferElement>::const_iterator begin() const { return bufferElements.begin(); }
-		std::vector<BufferElement>::const_iterator end() const { return bufferElements.end(); }
+		std::vector<BufferElement>::iterator begin() { return _BufferElements.begin(); }
+		std::vector<BufferElement>::iterator end() { return _BufferElements.end(); }
+		std::vector<BufferElement>::const_iterator begin() const { return _BufferElements.begin(); }
+		std::vector<BufferElement>::const_iterator end() const { return _BufferElements.end(); }
 	};
 	
 	class IndexBuffer
 	{
 	public:
-		virtual ~IndexBuffer() {}
+		virtual ~IndexBuffer() = default;
 
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;
@@ -116,7 +116,7 @@ namespace Nocturnal
 	class VertexBuffer
 	{
 	public:
-		virtual ~VertexBuffer() {}
+		virtual ~VertexBuffer() = default;
 
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;

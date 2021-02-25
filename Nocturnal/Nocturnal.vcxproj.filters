@@ -1359,6 +1359,9 @@
     <ClInclude Include="src\Nocturnal\Renderer\Renderer.h" />
     <ClInclude Include="src\Nocturnal\Renderer\VertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\Nocturnal\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Nocturnal\Renderer\RenderCommand.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
@@ -1401,5 +1404,8 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Nocturnal\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Nocturnal\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
   </ItemGroup>
 </Project>

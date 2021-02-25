@@ -7,20 +7,20 @@
 namespace Nocturnal
 {	
 	OpenGLContext::OpenGLContext(struct  GLFWwindow* window)
-		:_windowHandle(window)
+		:_WindowHandle(window)
 	{
 	}
 
 	void OpenGLContext::Init()
 	{
-		glfwMakeContextCurrent(_windowHandle);
+		glfwMakeContextCurrent(_WindowHandle);
 		const int status = gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
 		NOC_CORE_ASSERT(status, "Failed to initialize GLAD");
 	}
 
 	void OpenGLContext::SwapBuffers()
 	{
-		glfwSwapBuffers(_windowHandle);
+		glfwSwapBuffers(_WindowHandle);
 	}
 
 	
