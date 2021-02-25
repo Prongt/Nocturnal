@@ -1,6 +1,7 @@
 #pragma once
 #include "Nocturnal/Renderer/RendererContext.h"
 #include "OpenGLShader.h"
+#include "Nocturnal/Renderer/Buffer.h"
 
 struct GLFWwindow;
 
@@ -34,6 +35,8 @@ namespace Nocturnal
 			
 
 		std::unique_ptr<OpenGLShader> Shader;
+		std::unique_ptr<VertexBuffer> vertexBuffer;
+		std::unique_ptr<IndexBuffer> indexBuffer;
 			
 	public:
 		OpenGLContext(GLFWwindow* window);
