@@ -16,6 +16,8 @@ namespace Nocturnal
 		glfwMakeContextCurrent(_WindowHandle);
 		const int status = gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
 		NOC_CORE_ASSERT(status, "Failed to initialize GLAD");
+
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	void OpenGLContext::SwapBuffers()

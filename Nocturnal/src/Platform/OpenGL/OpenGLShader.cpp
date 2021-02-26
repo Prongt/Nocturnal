@@ -1,6 +1,9 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "OpenGLShader.h"
+
 #include "glad/glad.h"
+#include "GLFW/glfw3.h"
+
 
 namespace Nocturnal
 {
@@ -60,27 +63,27 @@ namespace Nocturnal
 			return;
 		}
 
-		_shaderId = glCreateProgram();
+		_ShaderId = glCreateProgram();
 
 		// Attach our shaders to our program
-		glAttachShader(_shaderId, vertexShaderId);
-		glAttachShader(_shaderId, fragmentShaderId);
+		glAttachShader(_ShaderId, vertexShaderId);
+		glAttachShader(_ShaderId, fragmentShaderId);
 
-		glLinkProgram(_shaderId);
+		glLinkProgram(_ShaderId);
 
 		// Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint programLinkStatus = 0;
-		glGetProgramiv(_shaderId, GL_LINK_STATUS, static_cast<int*>(&programLinkStatus));
+		glGetProgramiv(_ShaderId, GL_LINK_STATUS, static_cast<int*>(&programLinkStatus));
 		if (programLinkStatus == GL_FALSE)
 		{
 			GLint maxLength = 0;
-			glGetProgramiv(_shaderId, GL_INFO_LOG_LENGTH, &maxLength);
+			glGetProgramiv(_ShaderId, GL_INFO_LOG_LENGTH, &maxLength);
 
 			// The maxLength includes the NULL character
 			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(_shaderId, maxLength, &maxLength, &infoLog[0]);
+			glGetProgramInfoLog(_ShaderId, maxLength, &maxLength, &infoLog[0]);
 
-			glDeleteProgram(_shaderId);
+			glDeleteProgram(_ShaderId);
 			
 			glDeleteShader(vertexShaderId);
 			glDeleteShader(fragmentShaderId);
@@ -91,22 +94,34 @@ namespace Nocturnal
 		}
 
 		// Always detach shaders after a successful link.
-		glDetachShader(_shaderId, vertexShaderId);
-		glDetachShader(_shaderId, fragmentShaderId);
+		glDetachShader(_ShaderId, vertexShaderId);
+		glDetachShader(_ShaderId, fragmentShaderId);
 	}
 
 	OpenGLShader::~OpenGLShader()
 	{
-		glDeleteProgram(_shaderId);
+		glDeleteProgram(_ShaderId);
 	}
 
 	void OpenGLShader::Bind() const
 	{
-		glUseProgram(_shaderId);
+		glUseProgram(_ShaderId);
 	}
 
 	void OpenGLShader::UnBind() const
 	{
 		glUseProgram(0); 
+	}
+
+	void OpenGLShader::ApplyMatrixToUniform(char* uniformName, uint32_t matrixCount, bool transposeMatrix,
+		float* transformMatrix)
+	{
+		unsigned int uniformLocation = glGetUniformLocation(_ShaderId, uniformName);
+		glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, transformMatrix);
+	}
+
+	float OpenGLShader::GetTime()
+	{
+		return glfwGetTime();
 	}
 }
