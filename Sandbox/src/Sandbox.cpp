@@ -5,6 +5,7 @@
 #include "Nocturnal/Events/KeyEvent.h"
 #include "Nocturnal/Renderer/RenderCommand.h"
 #include "Nocturnal/Renderer/Renderer.h"
+#include "Nocturnal/Renderer/Texture.h"
 
 class ExampleLayer : public Nocturnal::Layer
 {
@@ -12,12 +13,15 @@ private:
 	const std::string _VertexShaderSource = R"(#version 330 core
 			layout (location = 0) in vec3 a_Position;
 			layout (location = 1) in vec4 a_Color;
+			layout (location = 2) in vec2 a_TexCoord;
 		
 			out vec3 v_position;
 			out vec4 v_Color;
+			out vec2 v_TexCoord;
 		
 			void main()
 			{
+				v_TexCoord = a_TexCoord;
 				v_Color = a_Color;
 				v_position = a_Position;
 				gl_Position = vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);
@@ -29,28 +33,34 @@ private:
 
 			in vec3 v_position;
 			in vec4 v_Color;
+			in vec2 v_TexCoord;
+
+			uniform sampler2D myTexture;
 		
 			void main()
 			{
-				FragColor = vec4(v_position * 0.5 + 0.5, 1.0f);
-				FragColor = v_Color;
+				FragColor = texture(myTexture, v_TexCoord) * v_Color;
 			}
 			)";
 
+	/*FragColor = vec4(v_position * 0.5 + 0.5, 1.0f);
+	FragColor = v_Color;*/
+
 	std::shared_ptr<Nocturnal::OpenGLShader> _Shader;
 	std::shared_ptr<Nocturnal::VertexArray> _VertexArray;
+	Nocturnal::Texture _Texture;
 public:
 	ExampleLayer()
-		: Layer("ExampleLayer")
+		: Layer("ExampleLayer"), _Texture("res/Textures/container.jpg")
 	{
 		_VertexArray.reset(Nocturnal::VertexArray::Create());
 
 		//Vertices of the triangle
 		//z is 0 as it is a 2d triangle 
 		float vertices[] = {
-			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-			0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-			0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f
+			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+			0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f
 		};
 
 		std::shared_ptr<Nocturnal::VertexBuffer> _vertexBuffer;
@@ -58,7 +68,8 @@ public:
 
 		const Nocturnal::BufferLayout layout = {
 			{Nocturnal::ShaderType::Float3, "a_Position"},
-			{Nocturnal::ShaderType::Float4, "a_Color"}
+			{Nocturnal::ShaderType::Float4, "a_Color"},
+			{Nocturnal::ShaderType::Float2, "a_TexCoord"}
 		};
 		_vertexBuffer->SetLayout(layout);
 		_VertexArray->AddVertexBuffer(_vertexBuffer);
@@ -68,6 +79,10 @@ public:
 		uint32_t indices[3] = { 0, 1, 2 };
 		_indexBuffer.reset(Nocturnal::IndexBuffer::Create(indices, sizeof(indices) / sizeof(indices[0])));
 		_VertexArray->AddIndexBuffer(_indexBuffer);
+
+		//const Nocturnal::Texture texture(R"(res\Textures\container.jpg)");
+		//_Texture = Nocturnal::Texture("res/Textures/container.jpg");
+		_Texture.Bind();
 
 
 		_Shader = std::make_unique<Nocturnal::OpenGLShader>(_VertexShaderSource, _FragmentShaderSource);
@@ -80,7 +95,10 @@ public:
 
 		Nocturnal::Renderer::BeginScene();
 
+		//_Texture.Bind();
 		_Shader->Bind();
+
+		_Texture.Bind();
 		Nocturnal::Renderer::Submit(_VertexArray);
 
 		Nocturnal::Renderer::EndScene();
