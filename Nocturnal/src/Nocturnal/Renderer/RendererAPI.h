@@ -21,6 +21,7 @@ namespace Nocturnal
 
 		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) = 0;
 
+		virtual float GetTime() = 0;
 		
 		inline static API GetAPI() { return s_Api; }
 	

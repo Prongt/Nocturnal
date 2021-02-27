@@ -13,49 +13,8 @@
 class ExampleLayer : public Nocturnal::Layer
 {
 private:
-	const std::string _VertexShaderSource = R"(#version 330 core
-			layout (location = 0) in vec3 a_Position;
-			layout (location = 1) in vec4 a_Color;
-			layout (location = 2) in vec2 a_TexCoord;
-		
-			out vec4 v_Color;
-			out vec2 v_TexCoord;
 
-			//uniform mat4 transform;
-			uniform mat4 model;
-			uniform mat4 view;
-			uniform mat4 projection;
-		
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				v_Color = a_Color;
-
-				//gl_Position = vec4(a_Position, 1.0f);
-				gl_Position = projection * view * model * vec4(a_Position, 1.0);
-			}
-			)";
-
-	//gl_Position = transform * vec4(a_Position, 1.0f);
-
-	const std::string _FragmentShaderSource = R"(#version 330 core
-			out vec4 FragColor;
-
-			in vec4 v_Color;
-			in vec2 v_TexCoord;
-
-			uniform sampler2D myTexture;
-		
-			void main()
-			{
-				FragColor = texture(myTexture, v_TexCoord) * v_Color;
-			}
-			)";
-
-	/*FragColor = vec4(v_position * 0.5 + 0.5, 1.0f);
-	FragColor = v_Color;*/
-
-	std::shared_ptr<Nocturnal::OpenGLShader> _Shader;
+	std::shared_ptr<Nocturnal::Shader> _Shader;
 	std::shared_ptr<Nocturnal::VertexArray> _VertexArray;
 	std::shared_ptr<Nocturnal::Texture> _Texture;
 public:
@@ -109,8 +68,8 @@ public:
 		_Texture.reset(Nocturnal::Texture::Create("res/Textures/Container.jpg"));
 		_Texture->Bind();
 
-
-		_Shader = std::make_unique<Nocturnal::OpenGLShader>(_VertexShaderSource, _FragmentShaderSource);	
+		_Shader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
+		_Shader->Bind();
 	}
 	
 	void OnUpdate() override
@@ -123,10 +82,10 @@ public:
 		_Texture->Bind();
 		
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::rotate(model, Nocturnal::OpenGLShader::GetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		model = glm::rotate(model, Nocturnal::RenderCommand::GetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
 		char uniformName[] = "model";
-		_Shader->ApplyMatrixToUniform(uniformName, 1, false, glm::value_ptr(model));
+		_Shader->SetMatrix4(uniformName, 1, false, glm::value_ptr(model));
 
 		float rotation = 45.0f;
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::Space))
@@ -136,14 +95,14 @@ public:
 
 		glm::mat4 projection = glm::perspective(glm::radians(rotation), 800.0f / 600.0f, 0.1f, 100.0f);
 		char uniformNameB[] = "projection";
-		_Shader->ApplyMatrixToUniform(uniformNameB, 1, false, glm::value_ptr(projection));
+		_Shader->SetMatrix4(uniformNameB, 1, false, glm::value_ptr(projection));
 
 		glm::mat4 view = glm::mat4(1.0f);
 		// note that we're translating the scene in the reverse direction of where we want to move
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 		
 		char uniformNameC[] = "view";
-		_Shader->ApplyMatrixToUniform(uniformNameC, 1, false, glm::value_ptr(view));
+		_Shader->SetMatrix4(uniformNameC, 1, false, glm::value_ptr(view));
 		
 		_Shader->Bind();
 		

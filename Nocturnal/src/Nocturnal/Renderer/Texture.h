@@ -5,9 +5,7 @@ namespace Nocturnal
 {
 	class Texture
 	{
-		
 	public:
-		//Texture(std::string path);
 		virtual ~Texture() = default;
 		virtual void Bind(uint32_t slot = 0) const = 0;
 		virtual void UnBind() const = 0;

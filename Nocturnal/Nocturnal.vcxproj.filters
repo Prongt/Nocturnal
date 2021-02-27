@@ -1365,6 +1365,7 @@
     <ClInclude Include="vendor\stb_image.h" />
     <ClInclude Include="src\Nocturnal\Renderer\Texture.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="src\Nocturnal\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
@@ -1413,5 +1414,6 @@
     <ClCompile Include="vendor\stb_image.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\Texture.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="src\Nocturnal\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>
