@@ -57,10 +57,10 @@ private:
 
 	std::shared_ptr<Nocturnal::OpenGLShader> _Shader;
 	std::shared_ptr<Nocturnal::VertexArray> _VertexArray;
-	Nocturnal::Texture _Texture;
+	std::shared_ptr<Nocturnal::Texture> _Texture;
 public:
 	ExampleLayer()
-		: Layer("ExampleLayer"), _Texture("res/Textures/container.jpg")
+		: Layer("ExampleLayer")
 	{
 		_VertexArray.reset(Nocturnal::VertexArray::Create());
 
@@ -106,7 +106,8 @@ public:
 		_indexBuffer.reset(Nocturnal::IndexBuffer::Create(indices, sizeof(indices) / sizeof(indices[0])));
 		_VertexArray->AddIndexBuffer(_indexBuffer);
 
-		_Texture.Bind();
+		_Texture.reset(Nocturnal::Texture::Create("res/Textures/Container.jpg"));
+		_Texture->Bind();
 
 
 		_Shader = std::make_unique<Nocturnal::OpenGLShader>(_VertexShaderSource, _FragmentShaderSource);	
@@ -119,7 +120,7 @@ public:
 
 		Nocturnal::Renderer::BeginScene();
 
-		_Texture.Bind();
+		_Texture->Bind();
 		
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::rotate(model, Nocturnal::OpenGLShader::GetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
@@ -127,7 +128,13 @@ public:
 		char uniformName[] = "model";
 		_Shader->ApplyMatrixToUniform(uniformName, 1, false, glm::value_ptr(model));
 
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+		float rotation = 45.0f;
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::Space))
+		{
+			rotation *= -1;
+		}
+
+		glm::mat4 projection = glm::perspective(glm::radians(rotation), 800.0f / 600.0f, 0.1f, 100.0f);
 		char uniformNameB[] = "projection";
 		_Shader->ApplyMatrixToUniform(uniformNameB, 1, false, glm::value_ptr(projection));
 
@@ -143,20 +150,11 @@ public:
 		Nocturnal::Renderer::Submit(_VertexArray);
 
 		Nocturnal::Renderer::EndScene();
-		/*if (Nocturnal::Input::IsKeyPressed(Nocturnal::KeyCode::B))
-		{
-			NOC_WARN("B key was pressed");
-		}
 		
-		if (Nocturnal::Input::IsKeyUp(Nocturnal::KeyCode::Space))
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::F4))
 		{
-			NOC_WARN("Space Released");
+			Nocturnal::Application::Get().CloseApplication();
 		}
-
-		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::D))
-		{
-			NOC_WARN("d Held");
-		}*/
 	}
 
 	bool OnKeyPressed(Nocturnal::KeyPressedEvent& event)

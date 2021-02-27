@@ -5,18 +5,16 @@ namespace Nocturnal
 {
 	class Texture
 	{
-	private:
-		uint32_t _RendererId;
-		std::string _FilePath;
-		unsigned char* _LocalBuffer;
-		int _Width, _Height, _BitsPerPixel;
+		
 	public:
-		Texture(std::string path);
-		~Texture();
-		void Bind(uint32_t slot = 0) const;
-		void UnBind() const;
+		//Texture(std::string path);
+		virtual ~Texture() = default;
+		virtual void Bind(uint32_t slot = 0) const = 0;
+		virtual void UnBind() const = 0;
 
-		int GetWidth() const { return _Width; }
-		int GetHeight() const { return _Height; }
+		virtual int GetWidth() const = 0;
+		virtual int GetHeight() const = 0;
+
+		static Texture* Create(const std::string& path);
 	};
 }

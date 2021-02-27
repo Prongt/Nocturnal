@@ -36,6 +36,8 @@ namespace Nocturnal
 
 		static Application& Get() { return *s_ApplicationInstance; }
 		Window& GetWindow() const { return *_WindowInstance; }
+
+		void CloseApplication() { _ApplicationIsRunning = false; }
 	};
 
 
