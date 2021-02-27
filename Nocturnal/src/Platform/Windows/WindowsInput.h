@@ -13,6 +13,5 @@ namespace Nocturnal
 		std::tuple<float, float> GetMousePositionImplementation() override;
 		float GetMouseXImplementation() override;
 		float GetMouseYImplementation() override;
-	
 	};
 }

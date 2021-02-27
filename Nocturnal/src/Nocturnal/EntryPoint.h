@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
 	NOC_CORE_INFO("Core Logging Initialized");
 	NOC_INFO("Client Logging Initialized");
 
-	auto* app = Nocturnal::CreateApplication();
+	Nocturnal::Application* app = Nocturnal::CreateApplication();
 	app->Run();
 	delete app;
 }

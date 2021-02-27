@@ -1,7 +1,6 @@
 #pragma once
 #include "Core.h"
 #include "InputCodes.h"
-#include "Events/KeyEvent.h"
 
 namespace Nocturnal
 {
@@ -9,8 +8,6 @@ namespace Nocturnal
 	{
 	private:
 		static Input* Instance;
-
-
 
 	protected:
 		virtual bool IsKeyDownImplementation(const int keycode) = 0;
@@ -24,9 +21,9 @@ namespace Nocturnal
 		 */
 		static bool IsKeyDown(const KeyCode keycode) { return Instance->IsKeyDownImplementation(static_cast<int>(keycode)); }
 		/**
-		 * \return returns true if key was released this frame
+		 * \return returns true if key is not pressed or held
 		 */
-		static bool IsKeyReleased(const KeyCode keycode) { return !Instance->IsKeyDownImplementation(static_cast<int>(keycode));}
+		static bool IsKeyUp(const KeyCode keycode) { return !Instance->IsKeyDownImplementation(static_cast<int>(keycode));}
 
 		static bool IsMouseDown(const MouseCode mouseCode) { return Instance->IsMouseDownImplementation(static_cast<int>(mouseCode)); }
 		static bool IsMouseDown(const int mouseCode) { return Instance->IsMouseDownImplementation(mouseCode); }
@@ -39,6 +36,6 @@ namespace Nocturnal
 		static std::tuple<float, float> GetMousePosition() { return Instance->GetMousePositionImplementation(); }
 		static float GetMouseX() { return Instance->GetMouseXImplementation(); }
 		static float GetMouseY() { return Instance->GetMouseYImplementation(); }
-		static float GetScrollDelta(bool getVertical = true) { NOC_LOG_NOT_IMPLEMENTED(); return 0.0f; }
+		static float GetScrollDelta(bool getVertical = true) { NOC_LOG_NOT_IMPLEMENTED(); return 0; }
 	};
 }

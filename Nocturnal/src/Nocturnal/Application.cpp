@@ -1,10 +1,9 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "Application.h"
-#include "Input.h"
-#include "Events/KeyEvent.h"
 #include "Nocturnal/Log.h"
-#include "glad/glad.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Renderer/RenderCommand.h"
+#include "Renderer/Renderer.h"
 
 namespace Nocturnal
 {
@@ -13,15 +12,15 @@ namespace Nocturnal
 	
 	Application::Application()
 	{
-		NOC_CORE_ASSERT(!ApplicationInstance, "Application instance already exists");
-		ApplicationInstance = this;
-		WindowInstance = std::unique_ptr<Window>(Window::Create());
-		WindowInstance->SetEventCallback(NOC_BIND_EVENT_FUNCTION(Application::OnWindowEvent));
+		NOC_CORE_ASSERT(!s_ApplicationInstance, "Application instance already exists");
+		s_ApplicationInstance = this;
+		_WindowInstance = std::unique_ptr<Window>(Window::Create());
+		_WindowInstance->SetEventCallback(NOC_BIND_EVENT_FUNCTION(Application::OnWindowEvent));
 
-		ImGuiLayerInstance = new ImGuiLayer();
-		PushOverlay(ImGuiLayerInstance);
+		_ImGuiLayerInstance = new ImGuiLayer();
+		PushOverlay(_ImGuiLayerInstance);
 	}
-	Application* Application::ApplicationInstance = nullptr;
+	Application* Application::s_ApplicationInstance = nullptr;
 
 	Application::~Application()
 	{
@@ -29,35 +28,30 @@ namespace Nocturnal
 
 	void Application::PushLayer(Layer* layer)
 	{
-		LayerStack.PushLayer(layer);
-		layer->OnAttach();
+		_LayerStack.PushLayer(layer);
 	}
 
 
 	void Application::PushOverlay(Layer* overlay)
 	{
-		LayerStack.PushOverlay(overlay);
-		overlay->OnAttach();
+		_LayerStack.PushOverlay(overlay);
 	}
 
 
 	void Application::Run()
 	{
-		while (ApplicationIsRunning)
+		while (_ApplicationIsRunning)
 		{
-			glClearColor(0, 1, 0, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
-
-			for (Layer* layer : LayerStack)
+			for (Layer* layer : _LayerStack)
 				layer->OnUpdate();
 
-			ImGuiLayerInstance->Begin();
+			_ImGuiLayerInstance->Begin();
 
-			for (Layer* layer : LayerStack)
+			for (Layer* layer : _LayerStack)
 				layer->OnImGuiRender();
 			
-			ImGuiLayerInstance->End();
-			WindowInstance->OnUpdate();
+			_ImGuiLayerInstance->End();
+			_WindowInstance->OnUpdate();
 		}
 	}
 
@@ -65,21 +59,19 @@ namespace Nocturnal
 	{
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(NOC_BIND_EVENT_FUNCTION(Application::OnWindowClose));
-
-		//Input::SetEvent(&event);
 		
 		//Goes through the layer stack and sends events
-		for (auto layerIterator = LayerStack.end(); layerIterator != LayerStack.begin();)
+		for (auto layerIterator = _LayerStack.end(); layerIterator != _LayerStack.begin();)
 		{
 			(*--layerIterator)->OnEvent(event);
-			if (event.EventHasBeenHandled){}
+			if (event.EventHasBeenHandled)
 				break;
 		}
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& event)
 	{
-		ApplicationIsRunning = false;
+		_ApplicationIsRunning = false;
 		return true;
 	}
 }

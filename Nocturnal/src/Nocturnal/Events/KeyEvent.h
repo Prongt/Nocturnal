@@ -58,7 +58,7 @@ namespace Nocturnal {
 	class NOCTURNAL_API KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keycode)
+		KeyReleasedEvent(const int keycode)
 			: KeyEvent(keycode) {}
 
 		std::string ToString() const override
@@ -74,7 +74,7 @@ namespace Nocturnal {
 	class NOCTURNAL_API KeyTypedEvent : public KeyEvent
 	{
 	public:
-		KeyTypedEvent(int keycode)
+		KeyTypedEvent(const int keycode)
 			: KeyEvent(keycode) {}
 
 		std::string ToString() const override

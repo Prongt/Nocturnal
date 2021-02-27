@@ -6,6 +6,8 @@
 #include "Nocturnal/Events/Event.h"
 #include "Window.h"
 #include "Nocturnal/Events/ApplicationEvent.h"
+#include "Platform/OpenGL/OpenGLShader.h"
+#include "Renderer/VertexArray.h"
 
 namespace Nocturnal
 {
@@ -14,16 +16,13 @@ namespace Nocturnal
 	class NOCTURNAL_API Application
 	{
 	private:
-		
-		bool ApplicationIsRunning = true;
-		LayerStack LayerStack;
-		std::unique_ptr<Window> WindowInstance;
-		//std::unique_ptr<ImGuiLayer> ImGuiLayerInstance;
-		ImGuiLayer* ImGuiLayerInstance;
-		static Application* ApplicationInstance;
+		bool _ApplicationIsRunning = true;
+		LayerStack _LayerStack;
+		std::unique_ptr<Window> _WindowInstance;
+		ImGuiLayer* _ImGuiLayerInstance;
+		static Application* s_ApplicationInstance;
 		
 		bool OnWindowClose(WindowCloseEvent& event);
-
 	public:
 		
 		Application();
@@ -35,11 +34,10 @@ namespace Nocturnal
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
-		static Application& Get() { return *ApplicationInstance; }
-		Window& GetWindow() const { return *WindowInstance; }
+		static Application& Get() { return *s_ApplicationInstance; }
+		Window& GetWindow() const { return *_WindowInstance; }
 
-	private:
-		
+		void CloseApplication() { _ApplicationIsRunning = false; }
 	};
 
 

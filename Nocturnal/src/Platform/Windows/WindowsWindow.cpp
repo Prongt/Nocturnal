@@ -5,7 +5,7 @@
 #include "Nocturnal/Events/MouseEvent.h"
 #include "Nocturnal/Events/KeyEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Nocturnal
 {
@@ -37,11 +37,13 @@ namespace Nocturnal
 		WindowInstanceData.Width = props.Width;
 		WindowInstanceData.Height = props.Height;
 
+		
+
 		NOC_CORE_TRACE("Creating Window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!GlfwHasInitialized)
 		{
-			int success = glfwInit();
+			const int success = glfwInit();
 			NOC_CORE_ASSERT(success, "Could not intialize GLFW!");
 
 			GlfwHasInitialized = true;
@@ -50,10 +52,12 @@ namespace Nocturnal
 		WindowInstance = glfwCreateWindow(static_cast<int>(WindowInstanceData.Width), 
 			static_cast<int>(WindowInstanceData.Height), 
 			WindowInstanceData.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(WindowInstance);
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		NOC_CORE_ASSERT(status, "Failed to initialize GLAD");
+		RenderingContextInstance = new OpenGLContext(WindowInstance);
+		
+		RenderingContextInstance->Init();
+		
+		
 		
 		glfwSetWindowUserPointer(WindowInstance, &WindowInstanceData);
 		SetVSync(true);
@@ -77,7 +81,7 @@ namespace Nocturnal
 			data.EventCallback(event);
 		});
 
-		glfwSetKeyCallback(WindowInstance, [](GLFWwindow* window, int key, int scanCode, int action, int mods)
+		glfwSetKeyCallback(WindowInstance, [](GLFWwindow* window, const int key, const int scanCode, const int action, int mods)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
@@ -101,6 +105,8 @@ namespace Nocturnal
 					data.EventCallback(event);
 					break;
 				}
+			default: 
+				NOC_CORE_ERROR("GLFW key callback not defined! Define the callback in {0}", __func__);
 			}
 		});
 
@@ -129,17 +135,19 @@ namespace Nocturnal
 				data.EventCallback(event);
 				break;
 			}
+			default: 
+				NOC_CORE_ERROR("GLFW mouse callback not defined! Define the callback in {0}", __func__);
 			}
 		});
 
-		glfwSetScrollCallback(WindowInstance, [](GLFWwindow* window, double scrollXOffset, double scrollYOffset)
+		glfwSetScrollCallback(WindowInstance, [](GLFWwindow* window, const double scrollXOffset, const double scrollYOffset)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			MouseScrolledEvent event(scrollXOffset, scrollYOffset);
 			data.EventCallback(event);
 		});
 
-		glfwSetCursorPosCallback(WindowInstance, [](GLFWwindow* window, double mouseXPosition, double mouseYPosition)
+		glfwSetCursorPosCallback(WindowInstance, [](GLFWwindow* window, const double mouseXPosition, const double mouseYPosition)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			MouseMovedEvent event(mouseXPosition, mouseYPosition);
@@ -157,10 +165,10 @@ namespace Nocturnal
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(WindowInstance);
+		RenderingContextInstance->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool enabled)
+	void WindowsWindow::SetVSync(const bool enabled)
 	{
 		if (enabled)
 			glfwSwapInterval(1);

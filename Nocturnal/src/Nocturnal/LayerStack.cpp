@@ -9,7 +9,7 @@ namespace Nocturnal
 
 	LayerStack::~LayerStack()
 	{
-		for (Layer* layer : Layers)
+		for (Layer* layer : _Layers)
 			delete layer;
 	}
 
@@ -18,8 +18,9 @@ namespace Nocturnal
 	 */
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		Layers.emplace(Layers.begin()+ LayerInsertIndex, layer);
-		LayerInsertIndex++;
+		_Layers.emplace(_Layers.begin()+ _LayerInsertIndex, layer);
+		_LayerInsertIndex++;
+		layer->OnAttach();
 	}
 
 	/**
@@ -27,25 +28,28 @@ namespace Nocturnal
 	 */
 	void LayerStack::PushOverlay(Layer* overlay)
 	{
-		Layers.emplace_back(overlay);
+		_Layers.emplace_back(overlay);
+		overlay->OnAttach();
 	}
 
 	void LayerStack::PopLayer(Layer* layer)
 	{
-		const auto layerToRemove = std::find(Layers.begin(), Layers.end(), layer);
-		if (layerToRemove != Layers.end())
+		const auto layerToRemove = std::find(_Layers.begin(), _Layers.begin() + _LayerInsertIndex, layer);
+		if (layerToRemove != _Layers.end())
 		{
-			Layers.erase(layerToRemove);
-			LayerInsertIndex--;
+			layer->OnDetach();
+			_Layers.erase(layerToRemove);
+			_LayerInsertIndex--;
 		}
 	}
 
 	void LayerStack::PopOverlay(Layer* overlay)
 	{
-		const auto layerToRemove = std::find(Layers.begin(), Layers.end(), overlay);
-		if (layerToRemove != Layers.end())
+		const auto layerToRemove = std::find(_Layers.begin(), _Layers.begin() + _LayerInsertIndex, overlay);
+		if (layerToRemove != _Layers.end())
 		{
-			Layers.erase(layerToRemove);
+			overlay->OnDetach();
+			_Layers.erase(layerToRemove);
 		}
 	}
 

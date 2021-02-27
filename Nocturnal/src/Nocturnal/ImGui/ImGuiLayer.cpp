@@ -4,10 +4,7 @@
 #include "examples/imgui_impl_opengl3.h"
 
 //TODO Remove headers 
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "Nocturnal/Input.h"
-#include "Nocturnal/Events/KeyEvent.h"
 
 namespace Nocturnal
 {
@@ -16,9 +13,7 @@ namespace Nocturnal
 	{
 	}
 
-	ImGuiLayer::~ImGuiLayer()
-	{
-	}
+	ImGuiLayer::~ImGuiLayer() = default;
 
 	void ImGuiLayer::OnAttach()
 	{
@@ -89,10 +84,10 @@ namespace Nocturnal
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			GLFWwindow* backupCurrentContext = glfwGetCurrentContext();
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
+			glfwMakeContextCurrent(backupCurrentContext);
 		}
 	}
 }
