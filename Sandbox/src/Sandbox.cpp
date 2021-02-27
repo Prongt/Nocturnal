@@ -11,6 +11,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Nocturnal/Renderer/Camera.h"
+
 class ExampleLayer : public Nocturnal::Layer
 {
 private:
@@ -22,19 +24,17 @@ private:
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
 
-	float pitch = 0.0f;
-	float yaw = -90.0f;
-	float lastX = 400;
-	float lastY = 300;
-	bool isFirstMouse = true;
 	float fieldOfView = 45.0f;
+	
 
-	glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
+	/*glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);*/
+
+	Nocturnal::Camera _Camera;
 public:
 	ExampleLayer()
-		: Layer("ExampleLayer")
+		: Layer("ExampleLayer"), _Camera(Nocturnal::Camera())
 	{
 		_VertexArray.reset(Nocturnal::VertexArray::Create());
 
@@ -105,49 +105,20 @@ public:
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		
-		const float cameraSpeed = 2.5f * deltaTime;
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::W))
-			cameraPosition += cameraSpeed * cameraFront;
+			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Forward, deltaTime);
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::S))
-			cameraPosition -= cameraSpeed * cameraFront;
+			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Back, deltaTime);
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::A))
-			cameraPosition -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Left, deltaTime);
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::D))
-			cameraPosition += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Right, deltaTime);
 
-		if (isFirstMouse)
-		{
-			lastX = Nocturnal::Input::GetMouseX();
-			lastY = Nocturnal::Input::GetMouseY();
-			isFirstMouse = false;
-		}
+		auto [mouseX, mouseY] = Nocturnal::Input::GetMousePosition();
+		_Camera.ProcessMouseMovement(mouseX, mouseY);
+
 		
-
-		float xOffset = Nocturnal::Input::GetMouseX() - lastX;
-		float yOffset = lastY - Nocturnal::Input::GetMouseY();
-		lastX = Nocturnal::Input::GetMouseX();
-		lastY = Nocturnal::Input::GetMouseY();
-
-		float sensitivity = 0.1f;
-		xOffset *= sensitivity;
-		yOffset *= sensitivity;
-
-		yaw += xOffset;
-		pitch += yOffset;
-
-		if (pitch > 89.0f)
-			pitch = 89.0f;
-		if (pitch < -89.0f)
-			pitch = -89.0f;
-
-
-		glm::vec3 direction;
-		direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		direction.y = sin(glm::radians(pitch));
-		direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-		cameraFront = glm::normalize(direction);
-		
-		glm::mat4 view = glm::lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
+		glm::mat4 view = _Camera.GetViewMatrix();
 		_Shader->SetMatrix4(static_cast<char*>("view"), 1, false, glm::value_ptr(view));
 
 		//Converting from object to world space
@@ -176,17 +147,18 @@ public:
 
 	bool OnMouseScrolled(Nocturnal::MouseScrolledEvent& event)
 	{
-		fieldOfView -= event.GetYOffset();
-		if (fieldOfView < 1.0f)
-			fieldOfView = 1.0f;
-		if (fieldOfView > 45.0f)
-			fieldOfView = 45.0f;
-
+		fieldOfView = _Camera.CalculateFov(event.GetYOffset());
+		
 		//Converting from screen to clip space
 		glm::mat4 projection = glm::perspective(glm::radians(fieldOfView), 800.0f / 400.0f, 0.1f, 100.0f);
 		_Shader->SetMatrix4(static_cast<char*>("projection"), 1, false, glm::value_ptr(projection));
 		
 		return true;
+	}
+
+	bool OnMouseMoved(Nocturnal::MouseMovedEvent& event)
+	{
+		
 	}
 
 	void OnEvent(Nocturnal::Event& event) override
