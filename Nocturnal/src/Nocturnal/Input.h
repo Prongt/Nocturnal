@@ -36,6 +36,6 @@ namespace Nocturnal
 		static std::tuple<float, float> GetMousePosition() { return Instance->GetMousePositionImplementation(); }
 		static float GetMouseX() { return Instance->GetMouseXImplementation(); }
 		static float GetMouseY() { return Instance->GetMouseYImplementation(); }
-		static float GetScrollDelta(bool getVertical = true) { NOC_LOG_NOT_IMPLEMENTED(); return 0.0f; }
+		static float GetScrollDelta(bool getVertical = true) { NOC_LOG_NOT_IMPLEMENTED(); return 0; }
 	};
 }

@@ -64,7 +64,7 @@ namespace Nocturnal
 		for (auto layerIterator = _LayerStack.end(); layerIterator != _LayerStack.begin();)
 		{
 			(*--layerIterator)->OnEvent(event);
-			if (event.EventHasBeenHandled){}
+			if (event.EventHasBeenHandled)
 				break;
 		}
 	}
