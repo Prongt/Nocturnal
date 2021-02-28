@@ -8,15 +8,7 @@
 #include "Nocturnal/InputCodes.h"
 
 //TODO mabye dont include all these in this header
-#include "Nocturnal/Events/KeyEvent.h"
-#include "Nocturnal/Events/MouseEvent.h"
-#include "Nocturnal/Renderer/RenderCommand.h"
-#include "Nocturnal/Renderer/Renderer.h"
-#include "Nocturnal/Renderer/Texture.h"
-#include "Nocturnal/Renderer/Camera.h"
-#include "glm/glm/glm.hpp"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+
 
 
 

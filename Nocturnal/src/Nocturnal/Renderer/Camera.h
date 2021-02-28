@@ -13,15 +13,15 @@ namespace Nocturnal
 	class Camera
 	{
 	private:
-		float _Pitch = 0.0f;
-		float _Yaw = -90.0f;
-		float _LastMouseX = 0;
-		float _LastMouseY = 0;
-		float _MovementSpeed = 2.5f;
-		float _MouseSensitivity = 0.1f;
+		float mPitch = 0.0f;
+		float mYaw = -90.0f;
+		float mLastMouseX = 0;
+		float mLastMouseY = 0;
+		float mMovementSpeed = 2.5f;
+		float mMouseSensitivity = 0.1f;
 
-		bool _isFirstInput = true;
-		float _FieldOfView = 45.0f;
+		bool mIsFirstInput = true;
+		float mFieldOfView = 45.0f;
 
 		void RecalculateCameraVectors();
 	

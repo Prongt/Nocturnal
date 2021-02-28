@@ -1,5 +1,15 @@
 #include <Nocturnal.h>
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "glm/glm.hpp"
 #include "imgui/imgui.h"
+#include "Nocturnal/Events/KeyEvent.h"
+#include "Nocturnal/Events/MouseEvent.h"
+#include "Nocturnal/Renderer/Camera.h"
+#include "Nocturnal/Renderer/RenderCommand.h"
+#include "Nocturnal/Renderer/Renderer.h"
+#include "Nocturnal/Renderer/Texture.h"
 
 class ExampleLayer : public Nocturnal::Layer
 {
@@ -72,10 +82,11 @@ public:
 		mShader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
 		mShader->Bind();
 
+		float aspectRatio = (float)Nocturnal::Application::Get().GetWindow().GetWidth() /
+			(float)Nocturnal::Application::Get().GetWindow().GetHeight();
 		//Converting from screen to clip space
-		glm::mat4 projection = glm::perspective(glm::radians(mFieldOfView), 800.0f / 400.0f, 0.1f, 100.0f);
-		mShader->SetMatrix4(static_cast<char*>("projection"), 1, false, glm::value_ptr(projection));
-
+		glm::mat4 projection = glm::perspective(glm::radians(mFieldOfView), aspectRatio, 0.1f, 100.0f);
+		Nocturnal::Renderer::SubmitProjectionMatrix(projection);
 	}
 	
 	void OnUpdate(const float deltaTime) override
@@ -83,7 +94,7 @@ public:
 		Nocturnal::RenderCommand::SetClearColor(0.1f, 0.1f, 0.1f);
 		Nocturnal::RenderCommand::Clear();
 
-		Nocturnal::Renderer::BeginScene();
+		Nocturnal::Renderer::BeginScene(mCamera);
 
 		mTexture->Bind();
 
@@ -99,19 +110,13 @@ public:
 		auto [mouseX, mouseY] = Nocturnal::Input::GetMousePosition();
 		mCamera.ProcessMouseMovement(mouseX, mouseY);
 
-		
-		glm::mat4 view = mCamera.GetViewMatrix();
-		mShader->SetMatrix4(static_cast<char*>("view"), 1, false, glm::value_ptr(view));
 
 		//Converting from object to world space
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::rotate(model, Nocturnal::RenderCommand::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		mShader->SetMatrix4(static_cast<char*>("model"), 1, false, glm::value_ptr(model));
-
+		Nocturnal::Renderer::SubmitModelMatrix(model);
 		
-		mShader->Bind();
-		
-		Nocturnal::Renderer::Submit(mVertexArray);
+		Nocturnal::Renderer::Submit(mShader, mVertexArray);
 
 		Nocturnal::Renderer::EndScene();
 		
@@ -124,10 +129,12 @@ public:
 	bool OnMouseScrolled(Nocturnal::MouseScrolledEvent& event)
 	{
 		mFieldOfView = mCamera.CalculateFov(event.GetYOffset());
-		
+
+		float aspectRatio = (float)Nocturnal::Application::Get().GetWindow().GetWidth() /
+			(float)Nocturnal::Application::Get().GetWindow().GetHeight();
 		//Converting from screen to clip space
-		glm::mat4 projection = glm::perspective(glm::radians(mFieldOfView), 800.0f / 400.0f, 0.1f, 100.0f);
-		mShader->SetMatrix4(static_cast<char*>("projection"), 1, false, glm::value_ptr(projection));
+		glm::mat4 projection = glm::perspective(glm::radians(mFieldOfView), aspectRatio, 0.1f, 100.0f);
+		Nocturnal::Renderer::SubmitProjectionMatrix(projection);
 		
 		return true;
 	}
