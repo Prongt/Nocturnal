@@ -1,5 +1,7 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "Application.h"
+
+#include "Time.h"
 #include "Nocturnal/Log.h"
 #include "ImGui/ImGuiLayer.h"
 #include "Renderer/RenderCommand.h"
@@ -42,8 +44,10 @@ namespace Nocturnal
 	{
 		while (_ApplicationIsRunning)
 		{
+			Time::CalculateDeltaTime(RenderCommand::GetTime());
+			
 			for (Layer* layer : _LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(Time::GetDeltaTime());
 
 			_ImGuiLayerInstance->Begin();
 

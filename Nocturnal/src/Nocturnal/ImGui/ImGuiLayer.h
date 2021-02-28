@@ -7,11 +7,9 @@ namespace Nocturnal
 {
 	class NOCTURNAL_API ImGuiLayer : public Layer
 	{
-	private:
-		float DeltaTime = 0;
 	public:
 		ImGuiLayer();
-		~ImGuiLayer();
+		virtual ~ImGuiLayer() = default;
 
 		void OnAttach() override;
 		void OnDetach() override;

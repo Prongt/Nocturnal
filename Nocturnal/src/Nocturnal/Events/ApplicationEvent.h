@@ -7,19 +7,19 @@ namespace Nocturnal {
 	class NOCTURNAL_API WindowResizeEvent : public Event
 	{
 	private:
-		unsigned int Width, Height;
+		unsigned int mWidth, mHeight;
 		
 	public:
 		WindowResizeEvent(const unsigned int width, const unsigned int height)
-			: Width(width), Height(height) {}
+			: mWidth(width), mHeight(height) {}
 
-		unsigned int GetWidth() const { return Width; }
-		unsigned int GetHeight() const { return Height; }
+		unsigned int GetWidth() const { return mWidth; }
+		unsigned int GetHeight() const { return mHeight; }
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "WindowResizeEvent: " << Width << ", " << Height;
+			ss << "WindowResizeEvent: " << mWidth << ", " << mHeight;
 			return ss.str();
 		}
 

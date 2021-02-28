@@ -1367,6 +1367,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Nocturnal\Renderer\Shader.h" />
     <ClInclude Include="src\Nocturnal\Renderer\Camera.h" />
+    <ClInclude Include="src\Nocturnal\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Nocturnal\Application.cpp">
@@ -1417,5 +1418,6 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\Shader.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Nocturnal\Time.cpp" />
   </ItemGroup>
 </Project>

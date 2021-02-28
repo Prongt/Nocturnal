@@ -163,6 +163,7 @@
     <ClInclude Include="src\Nocturnal\Renderer\Shader.h" />
     <ClInclude Include="src\Nocturnal\Renderer\Texture.h" />
     <ClInclude Include="src\Nocturnal\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Nocturnal\Time.h" />
     <ClInclude Include="src\Nocturnal\Window.h" />
     <ClInclude Include="src\NocturnalPrecompiledHeaders.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
@@ -606,6 +607,7 @@
     <ClCompile Include="src\Nocturnal\Renderer\Shader.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\Texture.cpp" />
     <ClCompile Include="src\Nocturnal\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Nocturnal\Time.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
