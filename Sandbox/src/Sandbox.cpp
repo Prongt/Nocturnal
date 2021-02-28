@@ -1,16 +1,5 @@
 #include <Nocturnal.h>
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "glm/glm.hpp"
-#include "imgui/imgui.h"
-#include "Nocturnal/Events/KeyEvent.h"
-#include "Nocturnal/Events/MouseEvent.h"
-#include "Nocturnal/Renderer/Camera.h"
-#include "Nocturnal/Renderer/RenderCommand.h"
-#include "Nocturnal/Renderer/Renderer.h"
-#include "Nocturnal/Renderer/Texture.h"
-
 class ExampleLayer : public Nocturnal::Layer
 {
 private:
@@ -19,16 +8,8 @@ private:
 	std::shared_ptr<Nocturnal::VertexArray> mVertexArray;
 	std::shared_ptr<Nocturnal::Texture> mTexture;
 
-	
-
-	float mFieldOfView = 45.0f;
-	
-
-	/*glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
-	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);*/
-
 	Nocturnal::Camera mCamera;
+	
 public:
 	ExampleLayer()
 		: Layer("ExampleLayer"), mCamera(Nocturnal::Camera())
@@ -81,12 +62,9 @@ public:
 
 		mShader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
 		mShader->Bind();
-
-		float aspectRatio = (float)Nocturnal::Application::Get().GetWindow().GetWidth() /
-			(float)Nocturnal::Application::Get().GetWindow().GetHeight();
-		//Converting from screen to clip space
-		glm::mat4 projection = glm::perspective(glm::radians(mFieldOfView), aspectRatio, 0.1f, 100.0f);
-		Nocturnal::Renderer::SubmitProjectionMatrix(projection);
+		
+		mCamera.CalculateAspectRatio(Nocturnal::Application::Get().GetWindow().GetWidth(),
+			Nocturnal::Application::Get().GetWindow().GetHeight());
 	}
 	
 	void OnUpdate(const float deltaTime) override
@@ -110,14 +88,29 @@ public:
 		auto [mouseX, mouseY] = Nocturnal::Input::GetMousePosition();
 		mCamera.ProcessMouseMovement(mouseX, mouseY);
 
-
-		//Converting from object to world space
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::rotate(model, Nocturnal::RenderCommand::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		Nocturnal::Renderer::SubmitModelMatrix(model);
+		glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(2.0f,  5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f,  3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f,  2.0f, -2.5f),
+			glm::vec3(1.5f,  0.2f, -1.5f),
+			glm::vec3(-1.3f,  1.0f, -1.5f)
+		};
 		
-		Nocturnal::Renderer::Submit(mShader, mVertexArray);
-
+		for (auto& cubePosition : cubePositions)
+		{
+			//Converting from object to world space
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePosition);
+			model = glm::rotate(model, Nocturnal::RenderCommand::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Nocturnal::Renderer::SubmitModelMatrix(model);
+			Nocturnal::Renderer::Submit(mShader, mVertexArray);
+		}
+		
 		Nocturnal::Renderer::EndScene();
 		
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::F4))
@@ -128,14 +121,13 @@ public:
 
 	bool OnMouseScrolled(Nocturnal::MouseScrolledEvent& event)
 	{
-		mFieldOfView = mCamera.CalculateFov(event.GetYOffset());
+		mCamera.CalculateFov(event.GetYOffset());
+		return true;
+	}
 
-		float aspectRatio = (float)Nocturnal::Application::Get().GetWindow().GetWidth() /
-			(float)Nocturnal::Application::Get().GetWindow().GetHeight();
-		//Converting from screen to clip space
-		glm::mat4 projection = glm::perspective(glm::radians(mFieldOfView), aspectRatio, 0.1f, 100.0f);
-		Nocturnal::Renderer::SubmitProjectionMatrix(projection);
-		
+	bool OnWindowResize(Nocturnal::WindowResizeEvent& event)
+	{
+		mCamera.CalculateAspectRatio(event.GetWidth(), event.GetHeight());
 		return true;
 	}
 
@@ -143,6 +135,7 @@ public:
 	{
 		Nocturnal::EventDispatcher eventDispatcher(event);
 		eventDispatcher.Dispatch<Nocturnal::MouseScrolledEvent>(NOC_BIND_EVENT_FUNCTION(ExampleLayer::OnMouseScrolled));
+		eventDispatcher.Dispatch<Nocturnal::WindowResizeEvent>(NOC_BIND_EVENT_FUNCTION(ExampleLayer::OnWindowResize));
 	}
 
 	void OnImGuiRender() override

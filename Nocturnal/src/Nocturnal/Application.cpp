@@ -2,27 +2,28 @@
 #include "Application.h"
 
 #include "Time.h"
-#include "Nocturnal/Log.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Nocturnal/Log.h"
 #include "Renderer/RenderCommand.h"
 #include "Renderer/Renderer.h"
 
+
 namespace Nocturnal
 {
-
+	Application* Application::sApplicationInstance = nullptr;
 	
 	
 	Application::Application()
 	{
-		NOC_CORE_ASSERT(!s_ApplicationInstance, "Application instance already exists");
-		s_ApplicationInstance = this;
-		_WindowInstance = std::unique_ptr<Window>(Window::Create());
-		_WindowInstance->SetEventCallback(NOC_BIND_EVENT_FUNCTION(Application::OnWindowEvent));
+		NOC_CORE_ASSERT(!sApplicationInstance, "Application instance already exists");
+		sApplicationInstance = this;
+		mWindowInstance = std::unique_ptr<Window>(Window::Create());
+		mWindowInstance->SetEventCallback(NOC_BIND_EVENT_FUNCTION(Application::OnWindowEvent));
 
-		_ImGuiLayerInstance = new ImGuiLayer();
-		PushOverlay(_ImGuiLayerInstance);
+		mImGuiLayerInstance = new ImGuiLayer();
+		PushOverlay(mImGuiLayerInstance);
 	}
-	Application* Application::s_ApplicationInstance = nullptr;
+	
 
 	Application::~Application()
 	{
@@ -30,32 +31,32 @@ namespace Nocturnal
 
 	void Application::PushLayer(Layer* layer)
 	{
-		_LayerStack.PushLayer(layer);
+		mLayerStack.PushLayer(layer);
 	}
 
 
 	void Application::PushOverlay(Layer* overlay)
 	{
-		_LayerStack.PushOverlay(overlay);
+		mLayerStack.PushOverlay(overlay);
 	}
 
 
 	void Application::Run()
 	{
-		while (_ApplicationIsRunning)
+		while (mApplicationIsRunning)
 		{
 			Time::CalculateDeltaTime(RenderCommand::GetTime());
 			
-			for (Layer* layer : _LayerStack)
+			for (Layer* layer : mLayerStack)
 				layer->OnUpdate(Time::GetDeltaTime());
 
-			_ImGuiLayerInstance->Begin();
+			mImGuiLayerInstance->Begin();
 
-			for (Layer* layer : _LayerStack)
+			for (Layer* layer : mLayerStack)
 				layer->OnImGuiRender();
 			
-			_ImGuiLayerInstance->End();
-			_WindowInstance->OnUpdate();
+			mImGuiLayerInstance->End();
+			mWindowInstance->OnUpdate();
 		}
 	}
 
@@ -65,7 +66,7 @@ namespace Nocturnal
 		dispatcher.Dispatch<WindowCloseEvent>(NOC_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 		
 		//Goes through the layer stack and sends events
-		for (auto layerIterator = _LayerStack.end(); layerIterator != _LayerStack.begin();)
+		for (auto layerIterator = mLayerStack.end(); layerIterator != mLayerStack.begin();)
 		{
 			(*--layerIterator)->OnEvent(event);
 			if (event.EventHasBeenHandled)
@@ -75,7 +76,7 @@ namespace Nocturnal
 
 	bool Application::OnWindowClose(WindowCloseEvent& event)
 	{
-		_ApplicationIsRunning = false;
+		mApplicationIsRunning = false;
 		return true;
 	}
 }

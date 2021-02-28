@@ -1,13 +1,15 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "Camera.h"
 
+
+#include "Renderer.h"
+#include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
 namespace Nocturnal
 {
 	void Camera::RecalculateCameraVectors()
 	{
-		
 		glm::vec3 forward;
 		forward.x = glm::cos(glm::radians(mYaw)) * glm::cos(glm::radians(mPitch));
 		forward.y = glm::sin(glm::radians(mPitch));
@@ -31,7 +33,14 @@ namespace Nocturnal
 		return glm::lookAt(Position, Position + ForwardAxis, UpAxis);
 	}
 
-	void Camera::ProcessKeyInput(CameraMoveDirection moveDirection, float deltaTime)
+	glm::mat4 Camera::GetProjectionMatrix() const
+	{
+		//Converting from screen to clip space
+		return glm::perspective(glm::radians(mFieldOfView),
+			mAspectRatio, mNearClipPlane, mFarClipPlane);
+	}
+
+	void Camera::ProcessKeyInput(const CameraMoveDirection moveDirection, const float deltaTime)
 	{
 		const float velocity = mMovementSpeed * deltaTime;
 		switch (moveDirection)
@@ -45,7 +54,7 @@ namespace Nocturnal
 		RecalculateCameraVectors();
 	}
 
-	void Camera::ProcessMouseMovement(float mouseX, float mouseY, bool constrainPitch)
+	void Camera::ProcessMouseMovement(const float mouseX, const float mouseY, const bool constrainPitch)
 	{
 		if (mIsFirstInput)
 		{
@@ -74,14 +83,19 @@ namespace Nocturnal
 		RecalculateCameraVectors();
 	}
 
-	float Camera::CalculateFov(float yScrollDelta)
+	float Camera::CalculateFov(const float yScrollDelta)
 	{
 		mFieldOfView -= yScrollDelta;
-		if (mFieldOfView < 1.0f)
-			mFieldOfView = 1.0f;
-		if (mFieldOfView > 45.0f)
-			mFieldOfView = 45.0f;
+		if (mFieldOfView < mMinFov)
+			mFieldOfView = mMinFov;
+		if (mFieldOfView > mMaxFov)
+			mFieldOfView = mMaxFov;
 		
 		return mFieldOfView;
+	}
+
+	void Camera::CalculateAspectRatio(const float width, const float height)
+	{
+		mAspectRatio = width / height;
 	}
 }

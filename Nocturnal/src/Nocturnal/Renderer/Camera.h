@@ -1,5 +1,6 @@
 #pragma once
 #include "glm/glm.hpp"
+#include "Nocturnal/Events/ApplicationEvent.h"
 
 namespace Nocturnal
 {
@@ -21,7 +22,15 @@ namespace Nocturnal
 		float mMouseSensitivity = 0.1f;
 
 		bool mIsFirstInput = true;
+
 		float mFieldOfView = 45.0f;
+		float mMinFov = 10.0f;
+		float mMaxFov = 45.0f;
+
+		float mAspectRatio;
+		float mNearClipPlane = 0.1f;
+		float mFarClipPlane = 100.0f;
+
 
 		void RecalculateCameraVectors();
 	
@@ -39,10 +48,16 @@ namespace Nocturnal
 			float fov = 45.0f);
 		
 		glm::mat4 GetViewMatrix() const;
+		glm::mat4 GetProjectionMatrix() const;
 
-		void ProcessKeyInput(CameraMoveDirection moveDirection, float deltaTime);
+		void ProcessKeyInput(const CameraMoveDirection moveDirection, const float deltaTime);
 
-		void ProcessMouseMovement(float mouseX, float mouseY, bool constrainPitch = true);
-		float CalculateFov(float yScrollDelta);
+		void ProcessMouseMovement(const float mouseX, const float mouseY, const bool constrainPitch = true);
+		
+		float CalculateFov(const float yScrollDelta);
+		float GetFov() const { return mFieldOfView; }
+		void SetFovConstraints(const float minFov, const float maxFov) { mMinFov = minFov, mMaxFov = maxFov; }
+		void CalculateAspectRatio(const float width, const float height);
+		float GetAspectRatio() const { return mAspectRatio; }
 	};
 }

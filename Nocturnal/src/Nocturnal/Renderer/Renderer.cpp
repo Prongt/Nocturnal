@@ -11,6 +11,7 @@ namespace Nocturnal
 	void Renderer::BeginScene(Camera& camera)
 	{
 		sSceneData->ViewMatrix = camera.GetViewMatrix();
+		sSceneData->ProjectionMatrix = camera.GetProjectionMatrix();
 	}
 
 	void Renderer::EndScene()
