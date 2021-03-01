@@ -1,6 +1,6 @@
 #pragma once
-#include "Buffer.h"
 #include <memory>
+#include "Buffer.h"
 
 namespace Nocturnal
 {

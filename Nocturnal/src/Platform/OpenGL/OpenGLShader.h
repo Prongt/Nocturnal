@@ -7,7 +7,7 @@ namespace Nocturnal
 	class OpenGLShader :public Shader
 	{
 	private:
-		unsigned int _ShaderId;
+		unsigned int mShaderId;
 	
 	public:
 		OpenGLShader(const char* vertexPath, const char* fragmentPath);

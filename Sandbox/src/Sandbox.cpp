@@ -106,7 +106,7 @@ public:
 			//Converting from object to world space
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePosition);
-			model = glm::rotate(model, Nocturnal::RenderCommand::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, Nocturnal::Time::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			Nocturnal::Renderer::SubmitModelMatrix(model);
 			Nocturnal::Renderer::Submit(mShader, mVertexArray);
 		}

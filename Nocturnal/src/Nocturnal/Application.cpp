@@ -4,7 +4,6 @@
 #include "Time.h"
 #include "ImGui/ImGuiLayer.h"
 #include "Nocturnal/Log.h"
-#include "Renderer/RenderCommand.h"
 #include "Renderer/Renderer.h"
 
 
@@ -45,7 +44,7 @@ namespace Nocturnal
 	{
 		while (mApplicationIsRunning)
 		{
-			Time::CalculateDeltaTime(RenderCommand::GetTime());
+			Time::CalculateDeltaTime(Time::GetTime());
 			
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate(Time::GetDeltaTime());

@@ -73,6 +73,7 @@ namespace Nocturnal
 
 		mYaw += xOffset;
 		mPitch += yOffset;
+		
 		if (constrainPitch)
 		{
 			if (mPitch > 89.0f)

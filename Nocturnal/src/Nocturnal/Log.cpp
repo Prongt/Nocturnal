@@ -4,18 +4,18 @@
 
 namespace Nocturnal
 {
-	std::shared_ptr<spdlog::logger> Log::CoreLogger;
-	std::shared_ptr<spdlog::logger> Log::ClientLogger;
+	std::shared_ptr<spdlog::logger> Log::sCoreLogger;
+	std::shared_ptr<spdlog::logger> Log::sClientLogger;
 
 	void Log::Init()
 	{
 		spdlog::set_pattern("%^[%T] %n: %v%$");
 		
-		CoreLogger = spdlog::stdout_color_mt("NOCTURNAL");
-		CoreLogger->set_level(spdlog::level::trace);
+		sCoreLogger = spdlog::stdout_color_mt("NOCTURNAL");
+		sCoreLogger->set_level(spdlog::level::trace);
 
-		ClientLogger = spdlog::stdout_color_mt("APP");
-		ClientLogger->set_level(spdlog::level::trace);
+		sClientLogger = spdlog::stdout_color_mt("APP");
+		sClientLogger->set_level(spdlog::level::trace);
 	}
 
 }

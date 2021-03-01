@@ -28,17 +28,17 @@ namespace Nocturnal
 	
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
-		glCreateVertexArrays(1, &_rendererID);
+		glCreateVertexArrays(1, &mRendererId);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
-		glDeleteVertexArrays(1, &_rendererID);
+		glDeleteVertexArrays(1, &mRendererId);
 	}
 
 	void OpenGLVertexArray::Bind() const
 	{
-		glBindVertexArray(_rendererID);
+		glBindVertexArray(mRendererId);
 	}
 
 	void OpenGLVertexArray::Unbind() const
@@ -50,7 +50,7 @@ namespace Nocturnal
 	{
 		NOC_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex buffer has no layout!");
 		
-		glBindVertexArray(_rendererID);
+		glBindVertexArray(mRendererId);
 		vertexBuffer->Bind();
 
 		uint32_t index = 0;
@@ -67,13 +67,13 @@ namespace Nocturnal
 			index++;
 		}
 
-		_vertexBuffers.push_back(vertexBuffer);
+		mVertexBuffers.push_back(vertexBuffer);
 	}
 
 	void OpenGLVertexArray::AddIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
-		glBindVertexArray(_rendererID);
+		glBindVertexArray(mRendererId);
 		indexBuffer->Bind();
-		_indexBuffer = indexBuffer;
+		mIndexBuffer = indexBuffer;
 	}	
 }

@@ -23,9 +23,9 @@ namespace Nocturnal
 
 		virtual float GetTime() = 0;
 		
-		inline static API GetAPI() { return s_Api; }
+		inline static API GetAPI() { return sApi; }
 	
 	private:
-		static API s_Api;
+		static API sApi;
 	};
 }

@@ -33,9 +33,9 @@ namespace Nocturnal
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
-		WindowInstanceData.Title = props.Title;
-		WindowInstanceData.Width = props.Width;
-		WindowInstanceData.Height = props.Height;
+		mWindowInstanceData.Title = props.Title;
+		mWindowInstanceData.Width = props.Width;
+		mWindowInstanceData.Height = props.Height;
 
 		
 
@@ -49,21 +49,21 @@ namespace Nocturnal
 			GlfwHasInitialized = true;
 		}
 
-		WindowInstance = glfwCreateWindow(static_cast<int>(WindowInstanceData.Width), 
-			static_cast<int>(WindowInstanceData.Height), 
-			WindowInstanceData.Title.c_str(), nullptr, nullptr);
+		mWindowInstance = glfwCreateWindow(static_cast<int>(mWindowInstanceData.Width), 
+			static_cast<int>(mWindowInstanceData.Height), 
+			mWindowInstanceData.Title.c_str(), nullptr, nullptr);
 
-		RenderingContextInstance = new OpenGLContext(WindowInstance);
+		mRenderingContextInstance = new OpenGLContext(mWindowInstance);
 		
-		RenderingContextInstance->Init();
+		mRenderingContextInstance->Init();
 		
 		
 		
-		glfwSetWindowUserPointer(WindowInstance, &WindowInstanceData);
+		glfwSetWindowUserPointer(mWindowInstance, &mWindowInstanceData);
 		SetVSync(true);
 
 		// Setting up GLFW event callbacks
-		glfwSetWindowSizeCallback(WindowInstance, 
+		glfwSetWindowSizeCallback(mWindowInstance, 
 			[](GLFWwindow* window, int width, int height)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
@@ -74,14 +74,14 @@ namespace Nocturnal
 			data.EventCallback(event);
 		});
 
-		glfwSetWindowCloseCallback(WindowInstance, [](GLFWwindow* window)
+		glfwSetWindowCloseCallback(mWindowInstance, [](GLFWwindow* window)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			WindowCloseEvent event;
 			data.EventCallback(event);
 		});
 
-		glfwSetKeyCallback(WindowInstance, [](GLFWwindow* window, const int key, const int scanCode, const int action, int mods)
+		glfwSetKeyCallback(mWindowInstance, [](GLFWwindow* window, const int key, const int scanCode, const int action, int mods)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
@@ -110,14 +110,14 @@ namespace Nocturnal
 			}
 		});
 
-		glfwSetCharCallback(WindowInstance, [](GLFWwindow* window, unsigned int keycode)
+		glfwSetCharCallback(mWindowInstance, [](GLFWwindow* window, unsigned int keycode)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			KeyTypedEvent event(static_cast<int>(keycode));
 			data.EventCallback(event);
 		});
 
-		glfwSetMouseButtonCallback(WindowInstance, [](GLFWwindow* window, int button, int action, int mods)
+		glfwSetMouseButtonCallback(mWindowInstance, [](GLFWwindow* window, int button, int action, int mods)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
@@ -140,14 +140,14 @@ namespace Nocturnal
 			}
 		});
 
-		glfwSetScrollCallback(WindowInstance, [](GLFWwindow* window, const double scrollXOffset, const double scrollYOffset)
+		glfwSetScrollCallback(mWindowInstance, [](GLFWwindow* window, const double scrollXOffset, const double scrollYOffset)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			MouseScrolledEvent event(scrollXOffset, scrollYOffset);
 			data.EventCallback(event);
 		});
 
-		glfwSetCursorPosCallback(WindowInstance, [](GLFWwindow* window, const double mouseXPosition, const double mouseYPosition)
+		glfwSetCursorPosCallback(mWindowInstance, [](GLFWwindow* window, const double mouseXPosition, const double mouseYPosition)
 		{
 			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			MouseMovedEvent event(mouseXPosition, mouseYPosition);
@@ -159,13 +159,13 @@ namespace Nocturnal
 
 	void WindowsWindow::Shutdown()
 	{
-		glfwDestroyWindow(WindowInstance);
+		glfwDestroyWindow(mWindowInstance);
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		RenderingContextInstance->SwapBuffers();
+		mRenderingContextInstance->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(const bool enabled)
@@ -175,11 +175,11 @@ namespace Nocturnal
 		else
 			glfwSwapInterval(0);
 
-		WindowInstanceData.VSyncIsEnabled = enabled;
+		mWindowInstanceData.VSyncIsEnabled = enabled;
 	}
 
 	bool WindowsWindow::IsVSyncEnabled() const
 	{
-		return WindowInstanceData.VSyncIsEnabled;
+		return mWindowInstanceData.VSyncIsEnabled;
 	}
 }

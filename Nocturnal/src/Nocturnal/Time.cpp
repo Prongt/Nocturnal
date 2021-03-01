@@ -3,9 +3,5 @@
 
 namespace Nocturnal
 {
-	void Time::CalculateDeltaTime(const float currentTime)
-	{
-		sDeltaTime = currentTime - sLastFrame;
-		sLastFrame = currentTime;
-	}
+	
 }

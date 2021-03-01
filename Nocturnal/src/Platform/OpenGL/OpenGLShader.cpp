@@ -98,27 +98,27 @@ namespace Nocturnal
 			return;
 		}
 
-		_ShaderId = glCreateProgram();
+		mShaderId = glCreateProgram();
 
 		// Attach our shaders to our program
-		glAttachShader(_ShaderId, vertexShaderId);
-		glAttachShader(_ShaderId, fragmentShaderId);
+		glAttachShader(mShaderId, vertexShaderId);
+		glAttachShader(mShaderId, fragmentShaderId);
 
-		glLinkProgram(_ShaderId);
+		glLinkProgram(mShaderId);
 
 		// Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint programLinkStatus = 0;
-		glGetProgramiv(_ShaderId, GL_LINK_STATUS, static_cast<int*>(&programLinkStatus));
+		glGetProgramiv(mShaderId, GL_LINK_STATUS, static_cast<int*>(&programLinkStatus));
 		if (programLinkStatus == GL_FALSE)
 		{
 			GLint maxLength = 0;
-			glGetProgramiv(_ShaderId, GL_INFO_LOG_LENGTH, &maxLength);
+			glGetProgramiv(mShaderId, GL_INFO_LOG_LENGTH, &maxLength);
 
 			// The maxLength includes the NULL character
 			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(_ShaderId, maxLength, &maxLength, &infoLog[0]);
+			glGetProgramInfoLog(mShaderId, maxLength, &maxLength, &infoLog[0]);
 
-			glDeleteProgram(_ShaderId);
+			glDeleteProgram(mShaderId);
 			
 			glDeleteShader(vertexShaderId);
 			glDeleteShader(fragmentShaderId);
@@ -129,18 +129,18 @@ namespace Nocturnal
 		}
 
 		// Always detach shaders after a successful link.
-		glDetachShader(_ShaderId, vertexShaderId);
-		glDetachShader(_ShaderId, fragmentShaderId);
+		glDetachShader(mShaderId, vertexShaderId);
+		glDetachShader(mShaderId, fragmentShaderId);
 	}
 
 	OpenGLShader::~OpenGLShader()
 	{
-		glDeleteProgram(_ShaderId);
+		glDeleteProgram(mShaderId);
 	}
 
 	void OpenGLShader::Bind() 
 	{
-		glUseProgram(_ShaderId);
+		glUseProgram(mShaderId);
 	}
 
 	void OpenGLShader::UnBind()
@@ -148,24 +148,24 @@ namespace Nocturnal
 		glUseProgram(0); 
 	}
 
-	void OpenGLShader::SetBool(const std::string& name, bool value) const
+	void OpenGLShader::SetBool(const std::string& name, const bool value) const
 	{
-		glUniform1i(glGetUniformLocation(_ShaderId, name.c_str()), static_cast<int>(value));
+		glUniform1i(glGetUniformLocation(mShaderId, name.c_str()), static_cast<int>(value));
 	}
 
-	void OpenGLShader::SetInt(const std::string& name, bool value) const
+	void OpenGLShader::SetInt(const std::string& name, const bool value) const
 	{
-		glUniform1i(glGetUniformLocation(_ShaderId, name.c_str()), value);
+		glUniform1i(glGetUniformLocation(mShaderId, name.c_str()), value);
 	}
 
-	void OpenGLShader::SetFloat(const std::string& name, bool value) const
+	void OpenGLShader::SetFloat(const std::string& name, const bool value) const
 	{
-		glUniform1f(glGetUniformLocation(_ShaderId, name.c_str()), value);
+		glUniform1f(glGetUniformLocation(mShaderId, name.c_str()), value);
 	}
 
 	void OpenGLShader::SetMatrix4(char* uniformName, uint32_t matrixCount, bool transposeMatrix,
 		float* transformMatrix) const
 	{
-		glUniformMatrix4fv(glGetUniformLocation(_ShaderId, uniformName), 1, GL_FALSE, transformMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(mShaderId, uniformName), 1, GL_FALSE, transformMatrix);
 	}
 }
