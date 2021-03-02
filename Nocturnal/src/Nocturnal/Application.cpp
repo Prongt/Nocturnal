@@ -44,7 +44,7 @@ namespace Nocturnal
 	{
 		while (mApplicationIsRunning)
 		{
-			Time::CalculateDeltaTime(Time::GetTime());
+			Time::UpdateTime();
 			
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate(Time::GetDeltaTime());
