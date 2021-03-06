@@ -7,8 +7,12 @@ private:
 	std::shared_ptr<Nocturnal::Shader> mShader;
 	std::shared_ptr<Nocturnal::VertexArray> mVertexArray;
 	std::shared_ptr<Nocturnal::Texture> mTexture;
+	std::shared_ptr<Nocturnal::Shader> mLitShader;
+	std::shared_ptr<Nocturnal::Shader> mLightSourceShader;
 
 	Nocturnal::Camera mCamera;
+
+	glm::vec3 mLightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 	
 public:
 	ExampleLayer()
@@ -62,6 +66,14 @@ public:
 
 		mShader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
 		mShader->Bind();
+
+		mLitShader.reset(Nocturnal::Shader::Create("res/Shaders/LitShader.vs", "res/Shaders/LitShader.fs"));
+		mLitShader->Bind();
+		
+
+		mLightSourceShader.reset(Nocturnal::Shader::Create("res/Shaders/LightSourceShader.vs", "res/Shaders/LightSourceShader.fs"));
+		mLightSourceShader->Bind();
+		
 		
 		mCamera.SetAspectRatio(Nocturnal::Application::Get().GetWindow().GetWidth(),
 			Nocturnal::Application::Get().GetWindow().GetHeight());
@@ -73,8 +85,6 @@ public:
 		Nocturnal::RenderCommand::Clear();
 
 		Nocturnal::Renderer::BeginScene(mCamera);
-
-		mTexture->Bind();
 
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::W))
 			mCamera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Forward, deltaTime);
@@ -100,15 +110,29 @@ public:
 			glm::vec3(1.5f,  0.2f, -1.5f),
 			glm::vec3(-1.3f,  1.0f, -1.5f)
 		};
-		
+		mLitShader->Bind();
+		mLitShader->SetVec3("objectColor", { 1.0f, 0.5f, 0.31f });
+		mLitShader->SetVec3("lightColor", { 1.0f, 1.0f, 1.0f });
+		mTexture->Bind();
 		for (auto& cubePosition : cubePositions)
 		{
 			//Converting from object to world space
 			glm::mat4 transformMatrix = glm::mat4(1.0f);
 			transformMatrix = glm::translate(transformMatrix, cubePosition);
 			transformMatrix = glm::rotate(transformMatrix, Nocturnal::Time::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			Nocturnal::Renderer::Submit(mShader, mVertexArray, transformMatrix);
+			Nocturnal::Renderer::Submit(mLitShader, mVertexArray, transformMatrix);
 		}
+
+
+		//LightSource Cube
+		mLightSourceShader->Bind();
+		mLightSourceShader->SetVec3("objectColor", { 1.0f, 0.5f, 0.31f });
+		mLightSourceShader->SetVec3("lightColor", { 1.0f, 1.0f, 1.0f });
+		glm::mat4 transformMatrix = glm::mat4(1.0f);
+		transformMatrix = glm::translate(transformMatrix, mLightPos);
+		transformMatrix = glm::scale(transformMatrix, glm::vec3(0.2f));
+		Nocturnal::Renderer::Submit(mLightSourceShader, mVertexArray, transformMatrix);
+
 		
 		Nocturnal::Renderer::EndScene();
 		

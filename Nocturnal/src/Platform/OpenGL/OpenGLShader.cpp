@@ -153,12 +153,12 @@ namespace Nocturnal
 		glUniform1i(glGetUniformLocation(mShaderId, name.c_str()), static_cast<int>(value));
 	}
 
-	void OpenGLShader::SetInt(const std::string& name, const bool value) const
+	void OpenGLShader::SetInt(const std::string& name, const int value) const
 	{
 		glUniform1i(glGetUniformLocation(mShaderId, name.c_str()), value);
 	}
 
-	void OpenGLShader::SetFloat(const std::string& name, const bool value) const
+	void OpenGLShader::SetFloat(const std::string& name, const float value) const
 	{
 		glUniform1f(glGetUniformLocation(mShaderId, name.c_str()), value);
 	}
@@ -167,5 +167,10 @@ namespace Nocturnal
 	                              const float* transformMatrix) const
 	{
 		glUniformMatrix4fv(glGetUniformLocation(mShaderId, uniformName), 1, GL_FALSE, transformMatrix);
+	}
+
+	void OpenGLShader::SetVec3(const std::string& name, const glm::vec3& value) const
+	{
+		glUniform3f(glGetUniformLocation(mShaderId, name.c_str()), value.x, value.y, value.z);
 	}
 }
