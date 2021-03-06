@@ -18,7 +18,10 @@ namespace Nocturnal
 
 	void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
 	{
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		//TODO originaly used draw elements
+		//glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		vertexArray->Bind();
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 
 	float OpenGLRendererAPI::GetTime()

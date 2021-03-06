@@ -22,32 +22,77 @@ public:
 
 		const Nocturnal::BufferLayout layout = {
 			{Nocturnal::ShaderType::Float3, "a_Position"},
-			{Nocturnal::ShaderType::Float4, "a_Color"},
-			{Nocturnal::ShaderType::Float2, "a_TexCoord"}
+			//{Nocturnal::ShaderType::Float4, "a_Color"},
+			{Nocturnal::ShaderType::Float2, "a_TexCoord"},
+			{Nocturnal::ShaderType::Float3, "a_Normal"}
 		};
 		
-		float vertices[] = {
-			   0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,
-			  0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,
-			 -0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,
-			  -0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,
+		/*float vertices[] = {
+			   0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,		0.0f,  0.0f, -1.0f,
+			  0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,		0.0f,  0.0f, -1.0f,
+			 -0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,		0.0f,  0.0f, -1.0f,
+			  -0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,		0.0f,  0.0f, 1.0f,
 											  			  
-			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,
-			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,
-			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,
-			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,
+			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,		0.0f,  0.0f, 1.0f,
+			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,		0.0f,  0.0f, 1.0f,
+			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,		-1.0f,  0.0f,  0.0f,
+			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,		-1.0f,  0.0f,  0.0f,
 			  								  			  
-			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,
-			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,
-			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,
-			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,
+			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,		-1.0f,  0.0f,  0.0f,
+			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,		1.0f,  0.0f,  0.0f,
+			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,		1.0f,  0.0f,  0.0f,
+			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,		1.0f,  0.0f,  0.0f,
+		};*/
+
+		float vertices[] = {
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
+		 0.5f, -0.5f, -0.5f,	1.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
+													  
+		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,		 0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,		 0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,	0.0f, 1.0f,		 0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  0.0f,  1.0f,
+													  
+		-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 -1.0f,  0.0f,  0.0f,
+													  
+		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
+													  
+		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,	1.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
+													  
+		-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  1.0f,  0.0f
 		};
 
 		std::shared_ptr<Nocturnal::VertexBuffer> _vertexBuffer;
 		_vertexBuffer.reset(Nocturnal::VertexBuffer::Create(vertices, sizeof(vertices)));
 		_vertexBuffer->SetLayout(layout);
 		mVertexArray->AddVertexBuffer(_vertexBuffer);
-		
+
 		uint32_t indices[] = 
 		{
 			0, 1, 3, 1, 2, 3,
@@ -95,6 +140,16 @@ public:
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::D))
 			mCamera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Right, deltaTime);
 
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::UpArrow))
+			mLightPos.z -= 1 * deltaTime;
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::DownArrow))
+			mLightPos.z += 1 * deltaTime;
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::LeftArrow))
+			mLightPos.x -= 1 * deltaTime;
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::RightArrow))
+			mLightPos.x += 1 * deltaTime;
+
+
 		auto [mouseX, mouseY] = Nocturnal::Input::GetMousePosition();
 		mCamera.ProcessMouseMovement(mouseX, mouseY);
 
@@ -113,13 +168,14 @@ public:
 		mLitShader->Bind();
 		mLitShader->SetVec3("objectColor", { 1.0f, 0.5f, 0.31f });
 		mLitShader->SetVec3("lightColor", { 1.0f, 1.0f, 1.0f });
+		mLitShader->SetVec3("lightPosition", mLightPos);
 		mTexture->Bind();
 		for (auto& cubePosition : cubePositions)
 		{
 			//Converting from object to world space
 			glm::mat4 transformMatrix = glm::mat4(1.0f);
 			transformMatrix = glm::translate(transformMatrix, cubePosition);
-			transformMatrix = glm::rotate(transformMatrix, Nocturnal::Time::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			//transformMatrix = glm::rotate(transformMatrix, Nocturnal::Time::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			Nocturnal::Renderer::Submit(mLitShader, mVertexArray, transformMatrix);
 		}
 
