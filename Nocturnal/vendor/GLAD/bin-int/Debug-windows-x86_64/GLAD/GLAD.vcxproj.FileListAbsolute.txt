@@ -1,2 +1,0 @@
-E:\Repos\Nocturnal\Nocturnal\vendor\GLAD\bin\Debug-windows-x86_64\GLAD\GLAD.pdb
-E:\Repos\Nocturnal\Nocturnal\vendor\GLAD\bin-int\Debug-windows-x86_64\GLAD\GLAD.pdb

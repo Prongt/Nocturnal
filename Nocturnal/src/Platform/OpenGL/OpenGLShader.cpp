@@ -163,8 +163,8 @@ namespace Nocturnal
 		glUniform1f(glGetUniformLocation(mShaderId, name.c_str()), value);
 	}
 
-	void OpenGLShader::SetMatrix4(char* uniformName, uint32_t matrixCount, bool transposeMatrix,
-		float* transformMatrix) const
+	void OpenGLShader::SetMatrix4(const char* uniformName, const uint32_t matrixCount, const bool transposeMatrix,
+	                              const float* transformMatrix) const
 	{
 		glUniformMatrix4fv(glGetUniformLocation(mShaderId, uniformName), 1, GL_FALSE, transformMatrix);
 	}

@@ -95,7 +95,7 @@ namespace Nocturnal
 		return mFieldOfView;
 	}
 
-	void Camera::CalculateAspectRatio(const float width, const float height)
+	void Camera::SetAspectRatio(const float width, const float height)
 	{
 		mAspectRatio = width / height;
 	}

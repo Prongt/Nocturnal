@@ -56,8 +56,8 @@ namespace Nocturnal
 		
 		float CalculateFov(const float yScrollDelta);
 		float GetFov() const { return mFieldOfView; }
-		void SetFovConstraints(const float minFov, const float maxFov) { mMinFov = minFov, mMaxFov = maxFov; }
-		void CalculateAspectRatio(const float width, const float height);
+		void SetFovConstraints(const float minFov, const float maxFov) { mMinFov = minFov; mMaxFov = maxFov; }
+		void SetAspectRatio(const float width, const float height);
 		float GetAspectRatio() const { return mAspectRatio; }
 	};
 }

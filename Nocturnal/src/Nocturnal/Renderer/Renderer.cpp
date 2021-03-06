@@ -18,15 +18,18 @@ namespace Nocturnal
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transformMatrix)
 	{
 		shader->Bind();
-		shader->SetMatrix4(static_cast<char*>("model"), 1, 
-			false, glm::value_ptr(sSceneData->ModelMatrix));
+		shader->SetMatrix4(static_cast<char*>("model"), 1,
+			false, glm::value_ptr(transformMatrix));
+		
+		//TODO Only has to be set once per shader instance not every renderer submit
 		shader->SetMatrix4(static_cast<char*>("view"), 1, 
-			false, glm::value_ptr(sSceneData->ViewMatrix));
+		                   false, glm::value_ptr(sSceneData->ViewMatrix));
 		shader->SetMatrix4(static_cast<char*>("projection"), 1, 
-			false, glm::value_ptr(sSceneData->ProjectionMatrix));
+		                   false, glm::value_ptr(sSceneData->ProjectionMatrix));
+		//--------------------------------------------------------------------------
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}

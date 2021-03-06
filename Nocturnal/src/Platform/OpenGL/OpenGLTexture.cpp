@@ -2,7 +2,7 @@
 #include "OpenGLTexture.h"
 
 
-#include "../../../vendor/stb_image.h"
+#include "../../../vendor/stb_image/stb_image.h"
 #include "glad/glad.h"
 
 namespace Nocturnal

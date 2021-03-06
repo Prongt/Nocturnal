@@ -63,7 +63,7 @@ public:
 		mShader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
 		mShader->Bind();
 		
-		mCamera.CalculateAspectRatio(Nocturnal::Application::Get().GetWindow().GetWidth(),
+		mCamera.SetAspectRatio(Nocturnal::Application::Get().GetWindow().GetWidth(),
 			Nocturnal::Application::Get().GetWindow().GetHeight());
 	}
 	
@@ -104,11 +104,10 @@ public:
 		for (auto& cubePosition : cubePositions)
 		{
 			//Converting from object to world space
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, cubePosition);
-			model = glm::rotate(model, Nocturnal::Time::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			Nocturnal::Renderer::SubmitModelMatrix(model);
-			Nocturnal::Renderer::Submit(mShader, mVertexArray);
+			glm::mat4 transformMatrix = glm::mat4(1.0f);
+			transformMatrix = glm::translate(transformMatrix, cubePosition);
+			transformMatrix = glm::rotate(transformMatrix, Nocturnal::Time::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Nocturnal::Renderer::Submit(mShader, mVertexArray, transformMatrix);
 		}
 		
 		Nocturnal::Renderer::EndScene();
@@ -127,7 +126,7 @@ public:
 
 	bool OnWindowResize(Nocturnal::WindowResizeEvent& event)
 	{
-		mCamera.CalculateAspectRatio(event.GetWidth(), event.GetHeight());
+		mCamera.SetAspectRatio(event.GetWidth(), event.GetHeight());
 		return true;
 	}
 

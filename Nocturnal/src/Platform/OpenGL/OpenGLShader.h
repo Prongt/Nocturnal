@@ -19,7 +19,7 @@ namespace Nocturnal
 		void SetBool(const std::string& name, bool value) const override;
 		void SetInt(const std::string& name, bool value) const override;
 		void SetFloat(const std::string& name, bool value) const override;
-		void SetMatrix4(char* uniformName, uint32_t matrixCount, bool transposeMatrix,
-			float* transformMatrix) const override;
+		void SetMatrix4(const char* uniformName, const uint32_t matrixCount, const bool transposeMatrix,
+		                const float* transformMatrix) const override;
 	};
 }
