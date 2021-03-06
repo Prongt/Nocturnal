@@ -21,10 +21,10 @@ public:
 		mVertexArray.reset(Nocturnal::VertexArray::Create());
 
 		const Nocturnal::BufferLayout layout = {
-			{Nocturnal::ShaderType::Float3, "a_Position"},
+			{Nocturnal::ShaderType::Float3, "aPosition"},
 			//{Nocturnal::ShaderType::Float4, "a_Color"},
-			{Nocturnal::ShaderType::Float2, "a_TexCoord"},
-			{Nocturnal::ShaderType::Float3, "a_Normal"}
+			{Nocturnal::ShaderType::Float2, "aTexCoord"},
+			{Nocturnal::ShaderType::Float3, "aNormal"}
 		};
 		
 		/*float vertices[] = {
@@ -93,6 +93,8 @@ public:
 		_vertexBuffer->SetLayout(layout);
 		mVertexArray->AddVertexBuffer(_vertexBuffer);
 
+
+		//TODO fix indicies INDICIES CURRENTLY NOT USED!!!
 		uint32_t indices[] = 
 		{
 			0, 1, 3, 1, 2, 3,
@@ -169,6 +171,7 @@ public:
 		mLitShader->SetVec3("objectColor", { 1.0f, 0.5f, 0.31f });
 		mLitShader->SetVec3("lightColor", { 1.0f, 1.0f, 1.0f });
 		mLitShader->SetVec3("lightPosition", mLightPos);
+		mLitShader->SetVec3("viewPosition", mCamera.Position);
 		mTexture->Bind();
 		for (auto& cubePosition : cubePositions)
 		{
