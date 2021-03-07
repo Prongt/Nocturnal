@@ -11,7 +11,7 @@ namespace Nocturnal
 		unsigned char* mLocalBuffer;
 		int mWidth;
 		int mHeight;
-		int mBitsPerPixel;
+		int mNumChannels;
 	public:
 		OpenGLTexture(const std::string& path);
 		virtual ~OpenGLTexture();

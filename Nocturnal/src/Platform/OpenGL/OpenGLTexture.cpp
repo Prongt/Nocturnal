@@ -10,23 +10,33 @@ namespace Nocturnal
 	OpenGLTexture::OpenGLTexture(const std::string& path)
 		:mRendererId(0), mFilePath(path),
 		mLocalBuffer(nullptr), mWidth(0),
-		mHeight(0), mBitsPerPixel(0)
+		mHeight(0), mNumChannels(0)
 	{
 		glGenTextures(1, &mRendererId);
 		glBindTexture(GL_TEXTURE_2D, mRendererId);
 
 		stbi_set_flip_vertically_on_load(1);
-		mLocalBuffer = stbi_load(mFilePath.c_str(), &mWidth, &mHeight, &mBitsPerPixel, 0);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+		mLocalBuffer = stbi_load(mFilePath.c_str(), &mWidth, &mHeight, &mNumChannels, 0);
 
 		if (mLocalBuffer)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, mLocalBuffer);
+			GLenum textureFormat = GL_RGB;
+		    if (mNumChannels == 1)
+		        textureFormat = GL_RED;
+		    else if (mNumChannels == 3)
+		        textureFormat = GL_RGB;
+		    else if (mNumChannels == 4)
+		        textureFormat = GL_RGBA;
+			
+			glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, mWidth, mHeight, 0, textureFormat, GL_UNSIGNED_BYTE, mLocalBuffer);
+			
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			
 			glBindTexture(GL_TEXTURE_2D, 0);
 			stbi_image_free(mLocalBuffer);
 		}

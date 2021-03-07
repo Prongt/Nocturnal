@@ -7,6 +7,7 @@ private:
 	std::shared_ptr<Nocturnal::Shader> mShader;
 	std::shared_ptr<Nocturnal::VertexArray> mVertexArray;
 	std::shared_ptr<Nocturnal::Texture> mTexture;
+	std::shared_ptr<Nocturnal::Texture> mTextureSpecular;
 	std::shared_ptr<Nocturnal::Shader> mLitShader;
 	std::shared_ptr<Nocturnal::Shader> mLightSourceShader;
 
@@ -22,71 +23,54 @@ public:
 
 		const Nocturnal::BufferLayout layout = {
 			{Nocturnal::ShaderType::Float3, "aPosition"},
-			//{Nocturnal::ShaderType::Float4, "a_Color"},
-			{Nocturnal::ShaderType::Float2, "aTexCoord"},
-			{Nocturnal::ShaderType::Float3, "aNormal"}
+			{Nocturnal::ShaderType::Float3, "aNormal"},
+			{Nocturnal::ShaderType::Float2, "aTexCoord"}
 		};
-		
-		/*float vertices[] = {
-			   0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,		0.0f,  0.0f, -1.0f,
-			  0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,		0.0f,  0.0f, -1.0f,
-			 -0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,		0.0f,  0.0f, -1.0f,
-			  -0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,		0.0f,  0.0f, 1.0f,
-											  			  
-			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,		0.0f,  0.0f, 1.0f,
-			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,		0.0f,  0.0f, 1.0f,
-			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,		-1.0f,  0.0f,  0.0f,
-			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,		-1.0f,  0.0f,  0.0f,
-			  								  			  
-			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,		-1.0f,  0.0f,  0.0f,
-			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,		1.0f,  0.0f,  0.0f,
-			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,		1.0f,  0.0f,  0.0f,
-			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,		1.0f,  0.0f,  0.0f,
-		};*/
 
 		float vertices[] = {
-		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
-		 0.5f, -0.5f, -0.5f,	1.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  0.0f, -1.0f,
-		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		 0.0f,  0.0f, -1.0f,
-													  
-		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,		 0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,		 0.0f,  0.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,	0.0f, 1.0f,		 0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  0.0f,  1.0f,
-													  
-		-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 -1.0f,  0.0f,  0.0f,
-													  
-		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 1.0f,  0.0f,  0.0f,
-													  
-		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,	1.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,		 0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,		 0.0f, -1.0f,  0.0f,
-													  
-		-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,		 0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,		 0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,	0.0f, 0.0f,		 0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,		 0.0f,  1.0f,  0.0f
-		};
+    // positions          // normals           // texture coords
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+};
 
 		std::shared_ptr<Nocturnal::VertexBuffer> _vertexBuffer;
 		_vertexBuffer.reset(Nocturnal::VertexBuffer::Create(vertices, sizeof(vertices)));
@@ -108,8 +92,11 @@ public:
 		indexBuffer.reset(Nocturnal::IndexBuffer::Create(indices, sizeof(indices) / sizeof(indices[0])));
 		mVertexArray->AddIndexBuffer(indexBuffer);
 
-		mTexture.reset(Nocturnal::Texture::Create("res/Textures/Container.jpg"));
+		mTexture.reset(Nocturnal::Texture::Create("res/Textures/container2.png"));
 		mTexture->Bind();
+
+		mTextureSpecular.reset(Nocturnal::Texture::Create("res/Textures/container2_specular.png"));
+		mTextureSpecular->Bind(1);
 
 		mShader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
 		mShader->Bind();
@@ -177,17 +164,21 @@ public:
 		
 
 		//material
-		mLitShader->SetVec3("material.ambient", {1.0f, 0.5f, 0.31f});
-		mLitShader->SetVec3("material.diffuse", {1.0f, 0.5f, 0.31f});
-		mLitShader->SetVec3("material.specular", {0.5f, 0.5f, 0.5f});
+		//mLitShader->SetVec3("material.ambient", {1.0f, 0.5f, 0.31f});
+		//mLitShader->SetVec3("material.diffuse", 0);
+		//mLitShader->SetVec3("material.specular", {0.5f, 0.5f, 0.5f});
+		mLitShader->SetInt("material.diffuse", 0);
+		mLitShader->SetInt("material.specular", 1);
+		mTexture->Bind();
+		mTextureSpecular->Bind(1);
 		mLitShader->SetFloat("material.shininess", 32.0f);
 
 		//Lighting
 		
-		glm::vec3 lightColor = glm::vec3(0,0,0.55f);
-        lightColor.x = sin(Nocturnal::Time::GetTime() * 2.0f);
+		glm::vec3 lightColor = glm::vec3(1,1,1);
+       /* lightColor.x = sin(Nocturnal::Time::GetTime() * 2.0f);
         lightColor.y = sin(Nocturnal::Time::GetTime() * 0.7f);
-        lightColor.z = sin(Nocturnal::Time::GetTime() * 1.3f);
+        lightColor.z = sin(Nocturnal::Time::GetTime() * 1.3f);*/
         glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); 
         glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
@@ -196,7 +187,7 @@ public:
 		mLitShader->SetVec3("light.specular", {1.0f, 1.0f, 1.0f});
 		
 		
-		mTexture->Bind();
+		
 		for (auto& cubePosition : cubePositions)
 		{
 			//Converting from object to world space
