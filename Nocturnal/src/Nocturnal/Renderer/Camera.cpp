@@ -1,6 +1,9 @@
 #include "NocturnalPrecompiledHeaders.h"
 #include "Camera.h"
 
+
+#include "Renderer.h"
+#include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
 namespace Nocturnal
@@ -8,9 +11,9 @@ namespace Nocturnal
 	void Camera::RecalculateCameraVectors()
 	{
 		glm::vec3 forward;
-		forward.x = cos(glm::radians(_Yaw)) * cos(glm::radians(_Pitch));
-		forward.y = sin(glm::radians(_Pitch));
-		forward.z = sin(glm::radians(_Yaw)) * cos(glm::radians(_Pitch));
+		forward.x = glm::cos(glm::radians(mYaw)) * glm::cos(glm::radians(mPitch));
+		forward.y = glm::sin(glm::radians(mPitch));
+		forward.z = glm::sin(glm::radians(mYaw)) * glm::cos(glm::radians(mPitch));
 		ForwardAxis = glm::normalize(forward);
 
 		RightAxis = glm::normalize(glm::cross(ForwardAxis, WorldUpAxis));  
@@ -19,8 +22,8 @@ namespace Nocturnal
 	}
 
 	Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch, float speed, float mouseSensitivity,
-	               float fov) : _Pitch(pitch), _Yaw(yaw), _MovementSpeed(speed),
-	                            _MouseSensitivity(mouseSensitivity), Position(position), UpAxis(up), WorldUpAxis(up)
+	               float fov) : mPitch(pitch), mYaw(yaw), mMovementSpeed(speed),
+	                            mMouseSensitivity(mouseSensitivity), Position(position), UpAxis(up), WorldUpAxis(up)
 	{
 		RecalculateCameraVectors();
 	}
@@ -30,9 +33,16 @@ namespace Nocturnal
 		return glm::lookAt(Position, Position + ForwardAxis, UpAxis);
 	}
 
-	void Camera::ProcessKeyInput(CameraMoveDirection moveDirection, float deltaTime)
+	glm::mat4 Camera::GetProjectionMatrix() const
 	{
-		const float velocity = _MovementSpeed * deltaTime;
+		//Converting from screen to clip space
+		return glm::perspective(glm::radians(mFieldOfView),
+			mAspectRatio, mNearClipPlane, mFarClipPlane);
+	}
+
+	void Camera::ProcessKeyInput(const CameraMoveDirection moveDirection, const float deltaTime)
+	{
+		const float velocity = mMovementSpeed * deltaTime;
 		switch (moveDirection)
 		{
 		case Forward: Position += ForwardAxis * velocity; break;
@@ -44,43 +54,49 @@ namespace Nocturnal
 		RecalculateCameraVectors();
 	}
 
-	void Camera::ProcessMouseMovement(float mouseX, float mouseY, bool constrainPitch)
+	void Camera::ProcessMouseMovement(const float mouseX, const float mouseY, const bool constrainPitch)
 	{
-		if (_isFirstInput)
+		if (mIsFirstInput)
 		{
-			_LastMouseX = mouseX;
-			_LastMouseY = mouseY;
-			_isFirstInput = false;
+			mLastMouseX = mouseX;
+			mLastMouseY = mouseY;
+			mIsFirstInput = false;
 		}
-		float xOffset = mouseX - _LastMouseX;
-		float yOffset = _LastMouseY - mouseY;
+		float xOffset = mouseX - mLastMouseX;
+		float yOffset = mLastMouseY - mouseY;
 
-		_LastMouseX = mouseX;
-		_LastMouseY = mouseY;
+		mLastMouseX = mouseX;
+		mLastMouseY = mouseY;
 		
-		xOffset *= _MouseSensitivity;
-		yOffset *= _MouseSensitivity;
+		xOffset *= mMouseSensitivity;
+		yOffset *= mMouseSensitivity;
 
-		_Yaw += xOffset;
-		_Pitch += yOffset;
+		mYaw += xOffset;
+		mPitch += yOffset;
+		
 		if (constrainPitch)
 		{
-			if (_Pitch > 89.0f)
-				_Pitch = 89.0f;
-			if (_Pitch < -89.0f)
-				_Pitch = -89.0f;
+			if (mPitch > 89.0f)
+				mPitch = 89.0f;
+			if (mPitch < -89.0f)
+				mPitch = -89.0f;
 		}
 		RecalculateCameraVectors();
 	}
 
-	float Camera::CalculateFov(float yScrollDelta)
+	float Camera::CalculateFov(const float yScrollDelta)
 	{
-		_FieldOfView -= yScrollDelta;
-		if (_FieldOfView < 1.0f)
-			_FieldOfView = 1.0f;
-		if (_FieldOfView > 45.0f)
-			_FieldOfView = 45.0f;
+		mFieldOfView -= yScrollDelta;
+		if (mFieldOfView < mMinFov)
+			mFieldOfView = mMinFov;
+		if (mFieldOfView > mMaxFov)
+			mFieldOfView = mMaxFov;
 		
-		return _FieldOfView;
+		return mFieldOfView;
+	}
+
+	void Camera::SetAspectRatio(const float width, const float height)
+	{
+		mAspectRatio = width / height;
 	}
 }

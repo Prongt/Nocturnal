@@ -7,7 +7,7 @@ namespace Nocturnal
 	class OpenGLShader :public Shader
 	{
 	private:
-		unsigned int _ShaderId;
+		unsigned int mShaderId;
 	
 	public:
 		OpenGLShader(const char* vertexPath, const char* fragmentPath);
@@ -17,9 +17,10 @@ namespace Nocturnal
 		void UnBind() override;
 
 		void SetBool(const std::string& name, bool value) const override;
-		void SetInt(const std::string& name, bool value) const override;
-		void SetFloat(const std::string& name, bool value) const override;
-		void SetMatrix4(char* uniformName, uint32_t matrixCount, bool transposeMatrix,
-			float* transformMatrix) const override;
+		void SetInt(const std::string& name, int value) const override;
+		void SetFloat(const std::string& name, float value) const override;
+		void SetMatrix4(const char* uniformName, const uint32_t matrixCount, const bool transposeMatrix,
+		                const float* transformMatrix) const override;
+		void SetVec3(const std::string& name, const glm::vec3& value) const override;
 	};
 }

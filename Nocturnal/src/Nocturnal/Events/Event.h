@@ -68,16 +68,16 @@ namespace Nocturnal
 		using EventFunction = std::function<bool(T&)>;
 	
 	private:
-		Event& EventInstance;
+		Event& mEventInstance;
 	public:
-		EventDispatcher(Event& event) : EventInstance(event) {}
+		EventDispatcher(Event& event) : mEventInstance(event) {}
 		
 		template<typename T>
 		bool Dispatch(EventFunction<T> function)
 		{
-			if (EventInstance.GetEventType() == T::GetStaticType())
+			if (mEventInstance.GetEventType() == T::GetStaticType())
 			{
-				EventInstance.EventHasBeenHandled = function(*static_cast<T*>(&EventInstance));
+				mEventInstance.EventHasBeenHandled = function(*static_cast<T*>(&mEventInstance));
 				return true;
 			}
 

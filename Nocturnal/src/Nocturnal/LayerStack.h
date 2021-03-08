@@ -9,8 +9,8 @@ namespace Nocturnal
 	class NOCTURNAL_API LayerStack
 	{
 	private:
-		std::vector<Layer*> _Layers;
-		unsigned int _LayerInsertIndex = 0;
+		std::vector<Layer*> mLayers;
+		unsigned int mLayerInsertIndex = 0;
 	public:
 		LayerStack();
 		~LayerStack();
@@ -20,7 +20,7 @@ namespace Nocturnal
 		void PopLayer(Layer* layer);
 		void PopOverlay(Layer* overlay);
 
-		std::vector<Layer*>::iterator begin() {return _Layers.begin(); }
-		std::vector<Layer*>::iterator end() {return _Layers.end(); }
+		std::vector<Layer*>::iterator begin() {return mLayers.begin(); }
+		std::vector<Layer*>::iterator end() {return mLayers.end(); }
 	};
 }

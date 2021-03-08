@@ -8,7 +8,7 @@ namespace Nocturnal
 	class OpenGLContext : public RendererContext
 	{
 	private:
-		GLFWwindow* _WindowHandle;
+		GLFWwindow* mWindowHandle;
 			
 	public:
 		OpenGLContext(GLFWwindow* window);

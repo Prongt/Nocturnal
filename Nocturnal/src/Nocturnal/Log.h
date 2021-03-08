@@ -1,21 +1,24 @@
 #pragma once
 
 #include "Core.h"
+
+#pragma warning(push, 0)
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#pragma warning(pop)
 
 namespace Nocturnal
 {
 	class NOCTURNAL_API Log
 	{
 	private:
-		static std::shared_ptr<spdlog::logger> CoreLogger;
-		static std::shared_ptr<spdlog::logger> ClientLogger;
+		static std::shared_ptr<spdlog::logger> sCoreLogger;
+		static std::shared_ptr<spdlog::logger> sClientLogger;
 	public:
 		static void Init();
 
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return CoreLogger; }
-		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return ClientLogger; }
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return sCoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return sClientLogger; }
 	};
 }
 

@@ -3,5 +3,5 @@
 
 namespace Nocturnal
 {
-	RendererAPI::API RendererAPI::s_Api = RendererAPI::API::OpenGL;
+	RendererAPI::API RendererAPI::sApi = RendererAPI::API::OpenGL;
 }

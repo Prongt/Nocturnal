@@ -5,7 +5,7 @@
 
 namespace Nocturnal
 {
-	Input* Input::Instance = new WindowsInput();
+	Input* Input::sInstance = new WindowsInput();
 	
 	auto* WindowsInput::GetGLFWWindow()
 	{

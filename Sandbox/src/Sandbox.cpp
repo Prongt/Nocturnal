@@ -1,73 +1,84 @@
 #include <Nocturnal.h>
 
-
-#include "imgui/imgui.h"
-#include "Nocturnal/Events/KeyEvent.h"
-#include "Nocturnal/Events/MouseEvent.h"
-#include "Nocturnal/Renderer/RenderCommand.h"
-#include "Nocturnal/Renderer/Renderer.h"
-#include "Nocturnal/Renderer/Texture.h"
-#include "glm/glm/glm.hpp"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include "Nocturnal/Renderer/Camera.h"
-
 class ExampleLayer : public Nocturnal::Layer
 {
 private:
 
-	std::shared_ptr<Nocturnal::Shader> _Shader;
-	std::shared_ptr<Nocturnal::VertexArray> _VertexArray;
-	std::shared_ptr<Nocturnal::Texture> _Texture;
+	std::shared_ptr<Nocturnal::Shader> mShader;
+	std::shared_ptr<Nocturnal::VertexArray> mVertexArray;
+	std::shared_ptr<Nocturnal::Texture> mTexture;
+	std::shared_ptr<Nocturnal::Texture> mTextureSpecular;
+	std::shared_ptr<Nocturnal::Shader> mLitShader;
+	std::shared_ptr<Nocturnal::Shader> mLightSourceShader;
 
-	float deltaTime = 0.0f;
-	float lastFrame = 0.0f;
+	Nocturnal::Camera mCamera;
 
-	float fieldOfView = 45.0f;
+	glm::vec3 mLightPos = glm::vec3(1.2f, 0.0f, 2.0f);
 	
-
-	/*glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
-	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);*/
-
-	Nocturnal::Camera _Camera;
 public:
 	ExampleLayer()
-		: Layer("ExampleLayer"), _Camera(Nocturnal::Camera())
+		: Layer("ExampleLayer"), mCamera(Nocturnal::Camera({0,0,5}))
 	{
-		_VertexArray.reset(Nocturnal::VertexArray::Create());
+		mVertexArray.reset(Nocturnal::VertexArray::Create());
+
+		const Nocturnal::BufferLayout layout = {
+			{Nocturnal::ShaderType::Float3, "aPosition"},
+			{Nocturnal::ShaderType::Float3, "aNormal"},
+			{Nocturnal::ShaderType::Float2, "aTexCoord"}
+		};
 
 		float vertices[] = {
-			   0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,
-			  0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,
-			 -0.5f, -0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,
-			  -0.5f, 0.5f, -0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,
-											  			  
-			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,
-			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,
-			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,
-			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,
-			  								  			  
-			   -0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 0.0f,
-			   0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 1.0f,
-			    0.5f, 0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		1.0f, 0.0f,
-			  -0.5f, -0.5f, 0.5f,		0.0f, 1.0f, 0.0f, 0.25f,		0.0f, 1.0f,
-		};
+    // positions          // normals           // texture coords
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+};
 
 		std::shared_ptr<Nocturnal::VertexBuffer> _vertexBuffer;
 		_vertexBuffer.reset(Nocturnal::VertexBuffer::Create(vertices, sizeof(vertices)));
-
-		const Nocturnal::BufferLayout layout = {
-			{Nocturnal::ShaderType::Float3, "a_Position"},
-			{Nocturnal::ShaderType::Float4, "a_Color"},
-			{Nocturnal::ShaderType::Float2, "a_TexCoord"}
-		};
 		_vertexBuffer->SetLayout(layout);
-		_VertexArray->AddVertexBuffer(_vertexBuffer);
+		mVertexArray->AddVertexBuffer(_vertexBuffer);
 
 
-		std::shared_ptr<Nocturnal::IndexBuffer> _indexBuffer;
+		//TODO fix indicies INDICIES CURRENTLY NOT USED!!!
 		uint32_t indices[] = 
 		{
 			0, 1, 3, 1, 2, 3,
@@ -77,60 +88,122 @@ public:
 			0, 3, 10, 3, 10, 8,
 			1, 2, 9, 2, 9, 11
 		};
-		_indexBuffer.reset(Nocturnal::IndexBuffer::Create(indices, sizeof(indices) / sizeof(indices[0])));
-		_VertexArray->AddIndexBuffer(_indexBuffer);
+		std::shared_ptr<Nocturnal::IndexBuffer> indexBuffer;
+		indexBuffer.reset(Nocturnal::IndexBuffer::Create(indices, sizeof(indices) / sizeof(indices[0])));
+		mVertexArray->AddIndexBuffer(indexBuffer);
 
-		_Texture.reset(Nocturnal::Texture::Create("res/Textures/Container.jpg"));
-		_Texture->Bind();
+		mTexture.reset(Nocturnal::Texture::Create("res/Textures/container2.png"));
+		mTexture->Bind();
 
-		_Shader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
-		_Shader->Bind();
+		mTextureSpecular.reset(Nocturnal::Texture::Create("res/Textures/container2_specular.png"));
+		mTextureSpecular->Bind(1);
 
-		//Converting from screen to clip space
-		glm::mat4 projection = glm::perspective(glm::radians(fieldOfView), 800.0f / 400.0f, 0.1f, 100.0f);
-		_Shader->SetMatrix4(static_cast<char*>("projection"), 1, false, glm::value_ptr(projection));
+		mShader.reset(Nocturnal::Shader::Create("res/Shaders/VertexShader.vs", "res/Shaders/FragmentShader.fs"));
+		mShader->Bind();
 
+		mLitShader.reset(Nocturnal::Shader::Create("res/Shaders/LitShader.vs", "res/Shaders/LitShader.fs"));
+		mLitShader->Bind();
+		
+
+		mLightSourceShader.reset(Nocturnal::Shader::Create("res/Shaders/LightSourceShader.vs", "res/Shaders/LightSourceShader.fs"));
+		mLightSourceShader->Bind();
+		
+		
+		mCamera.SetAspectRatio(Nocturnal::Application::Get().GetWindow().GetWidth(),
+			Nocturnal::Application::Get().GetWindow().GetHeight());
 	}
 	
-	void OnUpdate() override
+	void OnUpdate(const float deltaTime) override
 	{
 		Nocturnal::RenderCommand::SetClearColor(0.1f, 0.1f, 0.1f);
 		Nocturnal::RenderCommand::Clear();
 
-		Nocturnal::Renderer::BeginScene();
+		Nocturnal::Renderer::BeginScene(mCamera);
 
-		_Texture->Bind();
-
-		float currentFrame = Nocturnal::RenderCommand::GetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-		
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::W))
-			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Forward, deltaTime);
+			mCamera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Forward, deltaTime);
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::S))
-			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Back, deltaTime);
+			mCamera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Back, deltaTime);
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::A))
-			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Left, deltaTime);
+			mCamera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Left, deltaTime);
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::D))
-			_Camera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Right, deltaTime);
+			mCamera.ProcessKeyInput(Nocturnal::CameraMoveDirection::Right, deltaTime);
+
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::UpArrow))
+			mLightPos.z -= 1 * deltaTime;
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::DownArrow))
+			mLightPos.z += 1 * deltaTime;
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::LeftArrow))
+			mLightPos.x -= 1 * deltaTime;
+		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::RightArrow))
+			mLightPos.x += 1 * deltaTime;
+
 
 		auto [mouseX, mouseY] = Nocturnal::Input::GetMousePosition();
-		_Camera.ProcessMouseMovement(mouseX, mouseY);
+		mCamera.ProcessMouseMovement(mouseX, mouseY);
 
 		
-		glm::mat4 view = _Camera.GetViewMatrix();
-		_Shader->SetMatrix4(static_cast<char*>("view"), 1, false, glm::value_ptr(view));
 
-		//Converting from object to world space
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::rotate(model, Nocturnal::RenderCommand::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		_Shader->SetMatrix4(static_cast<char*>("model"), 1, false, glm::value_ptr(model));
+		glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(2.0f,  5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f,  3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f,  2.0f, -2.5f),
+			glm::vec3(1.5f,  0.2f, -1.5f),
+			glm::vec3(-1.3f,  1.0f, -1.5f)
+		};
+		mLitShader->Bind();
+		mLitShader->SetVec3("light.position", mLightPos);
+		mLitShader->SetVec3("viewPosition", mCamera.Position);
+
 
 		
-		_Shader->Bind();
-		
-		Nocturnal::Renderer::Submit(_VertexArray);
 
+		//material
+		mLitShader->SetInt("material.diffuse", 0);
+		mLitShader->SetInt("material.specular", 1);
+		mTexture->Bind();
+		mTextureSpecular->Bind(1);
+		mLitShader->SetFloat("material.shininess", 32.0f);
+
+		//Lighting
+		glm::vec3 lightColor = glm::vec3(1,1,1);
+       /* lightColor.x = sin(Nocturnal::Time::GetTime() * 2.0f);
+        lightColor.y = sin(Nocturnal::Time::GetTime() * 0.7f);
+        lightColor.z = sin(Nocturnal::Time::GetTime() * 1.3f);*/
+        glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); 
+        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+		mLitShader->SetVec3("light.ambient", ambientColor);
+        mLitShader->SetVec3("light.diffuse", diffuseColor);
+		mLitShader->SetVec3("light.specular", {1.0f, 1.0f, 1.0f});
+		
+		
+		
+		for (auto& cubePosition : cubePositions)
+		{
+			//Converting from object to world space
+			glm::mat4 transformMatrix = glm::mat4(1.0f);
+			transformMatrix = glm::translate(transformMatrix, cubePosition);
+			//transformMatrix = glm::rotate(transformMatrix, Nocturnal::Time::GetTime() * glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Nocturnal::Renderer::Submit(mLitShader, mVertexArray, transformMatrix);
+		}
+
+
+		//LightSource Cube
+		mLightSourceShader->Bind();
+		mLightSourceShader->SetVec3("objectColor", { 1.0f, 0.5f, 0.31f });
+		mLightSourceShader->SetVec3("lightColor", { 1.0f, 1.0f, 1.0f });
+		glm::mat4 transformMatrix = glm::mat4(1.0f);
+		transformMatrix = glm::translate(transformMatrix, mLightPos);
+		transformMatrix = glm::scale(transformMatrix, glm::vec3(0.2f));
+		Nocturnal::Renderer::Submit(mLightSourceShader, mVertexArray, transformMatrix);
+
+		
 		Nocturnal::Renderer::EndScene();
 		
 		if (Nocturnal::Input::IsKeyDown(Nocturnal::KeyCode::F4))
@@ -139,33 +212,23 @@ public:
 		}
 	}
 
-	bool OnKeyPressed(Nocturnal::KeyPressedEvent& event)
-	{
-		//NOC_ERROR("{0} was pressed", event.GetKeyCode());
-		return true;
-	}
-
 	bool OnMouseScrolled(Nocturnal::MouseScrolledEvent& event)
 	{
-		fieldOfView = _Camera.CalculateFov(event.GetYOffset());
-		
-		//Converting from screen to clip space
-		glm::mat4 projection = glm::perspective(glm::radians(fieldOfView), 800.0f / 400.0f, 0.1f, 100.0f);
-		_Shader->SetMatrix4(static_cast<char*>("projection"), 1, false, glm::value_ptr(projection));
-		
+		mCamera.CalculateFov(event.GetYOffset());
 		return true;
 	}
 
-	bool OnMouseMoved(Nocturnal::MouseMovedEvent& event)
+	bool OnWindowResize(Nocturnal::WindowResizeEvent& event)
 	{
-		
+		mCamera.SetAspectRatio(event.GetWidth(), event.GetHeight());
+		return true;
 	}
 
 	void OnEvent(Nocturnal::Event& event) override
 	{
 		Nocturnal::EventDispatcher eventDispatcher(event);
-		eventDispatcher.Dispatch<Nocturnal::KeyPressedEvent>(NOC_BIND_EVENT_FUNCTION(ExampleLayer::OnKeyPressed));
 		eventDispatcher.Dispatch<Nocturnal::MouseScrolledEvent>(NOC_BIND_EVENT_FUNCTION(ExampleLayer::OnMouseScrolled));
+		eventDispatcher.Dispatch<Nocturnal::WindowResizeEvent>(NOC_BIND_EVENT_FUNCTION(ExampleLayer::OnWindowResize));
 	}
 
 	void OnImGuiRender() override
@@ -183,8 +246,8 @@ public:
 	{
 		PushLayer(new ExampleLayer());
 	}
-	
-	~Sandbox() = default;
+
+	virtual ~Sandbox() = default;
 };
 
 Nocturnal::Application* Nocturnal::CreateApplication()

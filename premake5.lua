@@ -15,6 +15,7 @@ IncludeDir["GLFW"] = "Nocturnal/vendor/GLFW/include"
 IncludeDir["GLAD"] = "Nocturnal/vendor/GLAD/include"
 IncludeDir["imgui"] = "Nocturnal/vendor/imgui"
 IncludeDir["glm"] = "Nocturnal/vendor/glm"
+IncludeDir["stb_image"] = "Nocturnal/vendor/stb_image"
 
 group "Dependencies"
 	include "Nocturnal/vendor/GLFW"
@@ -44,7 +45,9 @@ project "Nocturnal"
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
-		"%{prj.name}/vendor/glm/glm/**.inl"
+		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp"
 	}
 	defines{
 		"_CRT_SECURE_NO_WARNINGS"
@@ -56,7 +59,9 @@ project "Nocturnal"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
+
 	}
 	
 	links{

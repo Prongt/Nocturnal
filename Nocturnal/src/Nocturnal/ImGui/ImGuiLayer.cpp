@@ -13,8 +13,6 @@ namespace Nocturnal
 	{
 	}
 
-	ImGuiLayer::~ImGuiLayer() = default;
-
 	void ImGuiLayer::OnAttach()
 	{
 		// Setup Dear ImGui context

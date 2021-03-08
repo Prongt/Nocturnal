@@ -14,7 +14,7 @@ namespace Nocturnal
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 
-		GLFWwindow* WindowInstance;
+		GLFWwindow* mWindowInstance;
 		struct WindowData
 		{
 			std::string Title;
@@ -24,21 +24,21 @@ namespace Nocturnal
 			EventCallbackFunction EventCallback;
 		};
 
-		WindowData WindowInstanceData;
-		RendererContext* RenderingContextInstance;
+		WindowData mWindowInstanceData;
+		RendererContext* mRenderingContextInstance;
 	public:
 		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
 
 		void OnUpdate() override;
 
-		unsigned int GetWidth() const override { return WindowInstanceData.Width; }
-		unsigned int GetHeight() const override { return WindowInstanceData.Height; }
+		unsigned int GetWidth() const override { return mWindowInstanceData.Width; }
+		unsigned int GetHeight() const override { return mWindowInstanceData.Height; }
 
-		void SetEventCallback(const EventCallbackFunction& callback) override { WindowInstanceData.EventCallback = callback; }
+		void SetEventCallback(const EventCallbackFunction& callback) override { mWindowInstanceData.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
 		bool IsVSyncEnabled() const override;
 
-		virtual void* GetNativeWindow() const { return  WindowInstance; }
+		void* GetNativeWindow() const override { return  mWindowInstance; }
 	};
 }

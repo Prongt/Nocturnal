@@ -5,5 +5,5 @@
 
 namespace Nocturnal
 {
-	RendererAPI* RenderCommand::s_RendererApi = new OpenGLRendererAPI;
+	RendererAPI* RenderCommand::sRendererApi = new OpenGLRendererAPI;
 }
