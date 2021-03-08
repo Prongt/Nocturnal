@@ -164,9 +164,6 @@ public:
 		
 
 		//material
-		//mLitShader->SetVec3("material.ambient", {1.0f, 0.5f, 0.31f});
-		//mLitShader->SetVec3("material.diffuse", 0);
-		//mLitShader->SetVec3("material.specular", {0.5f, 0.5f, 0.5f});
 		mLitShader->SetInt("material.diffuse", 0);
 		mLitShader->SetInt("material.specular", 1);
 		mTexture->Bind();
@@ -174,7 +171,6 @@ public:
 		mLitShader->SetFloat("material.shininess", 32.0f);
 
 		//Lighting
-		
 		glm::vec3 lightColor = glm::vec3(1,1,1);
        /* lightColor.x = sin(Nocturnal::Time::GetTime() * 2.0f);
         lightColor.y = sin(Nocturnal::Time::GetTime() * 0.7f);
