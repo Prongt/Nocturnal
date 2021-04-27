@@ -22,5 +22,6 @@ namespace Nocturnal
 		void SetMatrix4(const char* uniformName, const uint32_t matrixCount, const bool transposeMatrix,
 		                const float* transformMatrix) const override;
 		void SetVec3(const std::string& name, const glm::vec3& value) const override;
+		void SetVec4(const std::string& name, const glm::vec4& value) const override;
 	};
 }

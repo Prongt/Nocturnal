@@ -173,4 +173,9 @@ namespace Nocturnal
 	{
 		glUniform3f(glGetUniformLocation(mShaderId, name.c_str()), value.x, value.y, value.z);
 	}
+
+	void OpenGLShader::SetVec4(const std::string& name, const glm::vec4& value) const
+	{
+		glUniform4f(glGetUniformLocation(mShaderId, name.c_str()), value.x, value.y, value.z, value.w);
+	}
 }
