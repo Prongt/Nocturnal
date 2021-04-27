@@ -21,9 +21,9 @@ namespace Nocturnal
 		
 	}
 
-	Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch, float speed, float mouseSensitivity,
+	Camera::Camera(glm::vec3 position, float aspectRatio, glm::vec3 up, float yaw, float pitch, float speed, float mouseSensitivity,
 	               float fov) : mPitch(pitch), mYaw(yaw), mMovementSpeed(speed),
-	                            mMouseSensitivity(mouseSensitivity), Position(position), UpAxis(up), WorldUpAxis(up)
+	                            mMouseSensitivity(mouseSensitivity), mAspectRatio(aspectRatio), Position(position), UpAxis(up), WorldUpAxis(up)
 	{
 		RecalculateCameraVectors();
 	}

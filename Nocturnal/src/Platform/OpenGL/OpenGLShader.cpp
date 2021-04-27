@@ -38,7 +38,7 @@ namespace Nocturnal
 			// convert stream into string
 			vertexCode = vertexShaderStream.str();
 			fragmentCode = fragmentShaderStream.str();
-		}catch (std::ifstream::failure e)
+		}catch (std::ifstream::failure& e)
 		{
 			NOC_CORE_FATAL("FATAL ERROR SHADER FILE CANT BE READ!");
 		}

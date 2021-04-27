@@ -17,14 +17,18 @@ namespace Nocturnal
 	{
 		switch (type)
 		{
+		case ShaderType::Int:
 		case ShaderType::Float:		return 4;
+
+		case ShaderType::Int2:
 		case ShaderType::Float2:	return 8;
+
+		case ShaderType::Int3:
 		case ShaderType::Float3:	return 12;
+			
+		case ShaderType::Int4:
 		case ShaderType::Float4:	return 16;
-		case ShaderType::Int:		return 4;
-		case ShaderType::Int2:		return 8;
-		case ShaderType::Int3:		return 12;
-		case ShaderType::Int4:		return 16;
+		
 		case ShaderType::Mat3:		return 4 * 3 * 3;
 		case ShaderType::Mat4:		return 4 * 4 * 4;
 		case ShaderType::Bool:		return sizeof(bool);
@@ -50,14 +54,19 @@ namespace Nocturnal
 		{
 			switch (Type)
 			{
+			case ShaderType::Int:
 			case ShaderType::Float:		return 1;
+				
+			case ShaderType::Int2:
 			case ShaderType::Float2:	return 2;
+				
+			case ShaderType::Int3:
 			case ShaderType::Float3:	return 3;
+				
+			case ShaderType::Int4:
 			case ShaderType::Float4:	return 4;
-			case ShaderType::Int:		return 1;
-			case ShaderType::Int2:		return 2;
-			case ShaderType::Int3:		return 3;
-			case ShaderType::Int4:		return 4;
+			
+			
 			case ShaderType::Mat3:		return 3 * 3;
 			case ShaderType::Mat4:		return 4 * 4;
 			case ShaderType::Bool:		return 1;

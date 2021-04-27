@@ -41,7 +41,8 @@ namespace Nocturnal
 		glm::vec3 RightAxis;
 		glm::vec3 WorldUpAxis;
 
-		Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), 
+		Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+			float aspectRatio = 1920 / 1080,
 			glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), 
 			float yaw = -90.0f, float pitch = 0.0f, 
 			float speed = 2.5f, float mouseSensitivity = 0.1f, 

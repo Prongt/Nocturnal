@@ -35,7 +35,7 @@ namespace Nocturnal
 
 	
 
-	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, const uint32_t count)
 		: mIndicesCount(count)
 	{
 		glCreateBuffers(1, &mRendererId);
