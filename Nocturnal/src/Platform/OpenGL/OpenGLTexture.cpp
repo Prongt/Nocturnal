@@ -23,8 +23,6 @@ namespace Nocturnal
 			GLenum textureFormat = GL_RGB;
 		    if (mNumChannels == 1)
 		        textureFormat = GL_RED;
-		    else if (mNumChannels == 3)
-		        textureFormat = GL_RGB;
 		    else if (mNumChannels == 4)
 		        textureFormat = GL_RGBA;
 			

@@ -54,6 +54,7 @@ namespace Nocturnal
 		{
 			switch (Type)
 			{
+			case ShaderType::Bool:
 			case ShaderType::Int:
 			case ShaderType::Float:		return 1;
 				
@@ -69,7 +70,6 @@ namespace Nocturnal
 			
 			case ShaderType::Mat3:		return 3 * 3;
 			case ShaderType::Mat4:		return 4 * 4;
-			case ShaderType::Bool:		return 1;
 			case ShaderType::None:		return 0;
 			}
 			NOC_CORE_ASSERT(false, "Shader Type not valid!");
